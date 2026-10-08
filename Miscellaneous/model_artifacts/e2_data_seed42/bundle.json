@@ -1,0 +1,56 @@
+{
+  "format_version": 1,
+  "split_seed": 42,
+  "requested_validation_fraction": 0.2,
+  "files": {
+    "full_train": {
+      "filename": "full_train.json",
+      "sha256": "b8de64d57bbb3a4808145b24ddeee1e417b21a29ac9b72268d724c806e7f87f5"
+    },
+    "dev_train": {
+      "filename": "dev_train.json",
+      "sha256": "680750ac39537fab09b3eca5cd7f84333a86841f0a6b7a3e925a1469c004ad0c"
+    },
+    "validation": {
+      "filename": "validation.json",
+      "sha256": "073a15e8f90d2987946609f0a96550417065209631b9671bde727f63ccd138d1"
+    },
+    "test": {
+      "filename": "test.json",
+      "sha256": "ed9e510313ffee1ec8af5b8e6be90acddbc7f6f603d96b204a6eb2579da74b25"
+    }
+  },
+  "counts": {
+    "full_train": 1450,
+    "dev_train": 1160,
+    "validation": 290,
+    "test": 798
+  },
+  "e0_test_signature": "babdc64bdd5cef763f8a6b97440ecb38d6153b8bda9f1b082100923528a2be02",
+  "grouped_by_supplied_identity": false,
+  "strata": {
+    "dev_train": {
+      "numeric_filename_family/large_ge10pct": 155,
+      "numeric_filename_family/medium_1to10pct": 277,
+      "numeric_filename_family/small_lt1pct": 8,
+      "opaque_filename_family/large_ge10pct": 407,
+      "opaque_filename_family/medium_1to10pct": 309,
+      "opaque_filename_family/small_lt1pct": 4
+    },
+    "validation": {
+      "numeric_filename_family/large_ge10pct": 39,
+      "numeric_filename_family/medium_1to10pct": 69,
+      "numeric_filename_family/small_lt1pct": 2,
+      "opaque_filename_family/medium_1to10pct": 77,
+      "opaque_filename_family/large_ge10pct": 102,
+      "opaque_filename_family/small_lt1pct": 1
+    }
+  },
+  "limitations": [
+    "No patient/sequence independence claim without supplied reliable identities.",
+    "Filename families are source hints only. Near-duplicate grouping not verified.",
+    "Original test entries include duplicate content and have already been inspected during E1.",
+    "Internal validation may have been used to train the existing PVT reference. Do not tune fusion on it."
+  ],
+  "bundle_signature": "4db3da9a564f2ee728ec69b7157ad7a39d0533e3f22c1242d656ca2008b8c455"
+}

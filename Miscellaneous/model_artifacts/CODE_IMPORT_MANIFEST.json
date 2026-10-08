@@ -1,0 +1,321 @@
+{
+  "date": "2026-10-08",
+  "note": "Imported experiment Python files retain their original bytes. README overrides and new docs will be listed in git diff.",
+  "files": [
+    {
+      "path": "SystemCode/model/docs/UPSTREAM_POLYP_PVT.md",
+      "sha256": "62023c3933ffa8517d4a52fa99f24e89b7cf6b90f61f4ec9a1f960b5ce181fc9",
+      "bytes": 5429
+    },
+    {
+      "path": "SystemCode/model/e4_windows/test_e4.py",
+      "sha256": "21c7d64f9e45f4c8c9aaf8686a2e67aa4dc241af7fd1906c96ada690062e3d24",
+      "bytes": 2181
+    },
+    {
+      "path": "SystemCode/model/e4_windows/01_check_and_smoke.cmd",
+      "sha256": "32125aeb9ed694d2e22c56ded782dcc4534eb32f1d4a971f2ec56d059dda62bb",
+      "bytes": 295
+    },
+    {
+      "path": "SystemCode/model/e4_windows/02_train_development.cmd",
+      "sha256": "57d32726658882e0515f68188d440277e61db0164bb1d829f4fcd31500a45103",
+      "bytes": 110
+    },
+    {
+      "path": "SystemCode/model/e4_windows/README.md",
+      "sha256": "2d95c1df340ec654bc86edd943b7e02a4bb26e65a5127d52c4bc07c086ca90fe",
+      "bytes": 8926
+    },
+    {
+      "path": "SystemCode/model/e4_windows/requirements-common.txt",
+      "sha256": "611b87d21026c1840651efab66367fef8f3de165d770b674e068a67c4a317590",
+      "bytes": 29
+    },
+    {
+      "path": "SystemCode/model/e4_windows/run_e4.py",
+      "sha256": "17ebdaee744af304840b6d21bfdf59f37ffe5c1c2a5b575f42ff1a464a56c102",
+      "bytes": 10335
+    },
+    {
+      "path": "SystemCode/model/e4_windows/03_compare_validation.cmd",
+      "sha256": "32c095035b6a81c6112c9123f7f677867c0d9f6eb384d6c6835b1dc07dd9e9be",
+      "bytes": 170
+    },
+    {
+      "path": "SystemCode/model/e4_windows/core/run_e2.py",
+      "sha256": "28232d1bd096765941d67a175b5bd8366a2550dcbd26b49a8b8937dc38ac1c85",
+      "bytes": 16297
+    },
+    {
+      "path": "SystemCode/model/e4_windows/core/e0_protocol.py",
+      "sha256": "34007b62ca6a2d529c9b738b7216b2d59b3c640b04f9bcb18d70b75b6c1790c8",
+      "bytes": 6906
+    },
+    {
+      "path": "SystemCode/model/e4_windows/core/check_device.py",
+      "sha256": "a9ad53f36d8b76db9348d4c0803ef5e46ae0b71dee53a131681822a288d952ed",
+      "bytes": 2624
+    },
+    {
+      "path": "SystemCode/model/e4_windows/core/models.py",
+      "sha256": "af56b30e60d23c6ae3260b4dabf4d0c6d7d64a4329d9220a27703691eeb164c3",
+      "bytes": 4537
+    },
+    {
+      "path": "SystemCode/model/e4_windows/core/engine.py",
+      "sha256": "c6dd05355e26b022d112f8a2a6a32ec5ce41f28e1f04e96c1c6e5b3cdaeddae5",
+      "bytes": 23972
+    },
+    {
+      "path": "SystemCode/model/e4_windows/core/original_unet.py",
+      "sha256": "2615c13687462a5b7e9f89865728970cd7a4897bb559e86f93326145ac0a85dc",
+      "bytes": 2065
+    },
+    {
+      "path": "SystemCode/model/e4_windows/core/test_e2.py",
+      "sha256": "d416f458a50ef6f8e0ed0215349714c58988661b5efee0f5d9ea7449ffe099ce",
+      "bytes": 8750
+    },
+    {
+      "path": "SystemCode/model/e4_windows/core/data.py",
+      "sha256": "17b17519a31aed5e555a9f9f09f18fa3a1a40b4e584736ca2fb79f73f61b87c4",
+      "bytes": 11629
+    },
+    {
+      "path": "SystemCode/model/e1_windows/e0_protocol.py",
+      "sha256": "34007b62ca6a2d529c9b738b7216b2d59b3c640b04f9bcb18d70b75b6c1790c8",
+      "bytes": 6906
+    },
+    {
+      "path": "SystemCode/model/e1_windows/README_WINDOWS_TRANSFER.md",
+      "sha256": "847419c17e00b1b4e3a6987577ebf06dd41160fc875e78bd1083ff3b88f1fc99",
+      "bytes": 8833
+    },
+    {
+      "path": "SystemCode/model/e1_windows/check_device.py",
+      "sha256": "a5fd74cbb10e49df9ae52d4754a5e31efcad34589b096e2211a1f4fa695a6c1d",
+      "bytes": 1795
+    },
+    {
+      "path": "SystemCode/model/e1_windows/test_e1.py",
+      "sha256": "7ba48b0c302b735fdc971b525d006a3275473939db34bfc8ea01038b55eb544b",
+      "bytes": 6223
+    },
+    {
+      "path": "SystemCode/model/e1_windows/VALIDATION.md",
+      "sha256": "de1326f54ed5d2448852e9656117b4686d986f43480084fcda6cf99f5e09b45d",
+      "bytes": 1618
+    },
+    {
+      "path": "SystemCode/model/e1_windows/unet.py",
+      "sha256": "2615c13687462a5b7e9f89865728970cd7a4897bb559e86f93326145ac0a85dc",
+      "bytes": 2065
+    },
+    {
+      "path": "SystemCode/model/e1_windows/requirements-windows.txt",
+      "sha256": "e9d917139177a8bfc59a0c98a8bc1550a395fc23429c7d64df938d510545af15",
+      "bytes": 110
+    },
+    {
+      "path": "SystemCode/model/e1_windows/run_e1.py",
+      "sha256": "822501a17c79f7c855dc52a472e8530cc8c105428bce07a0c94c61429b25e7ea",
+      "bytes": 32761
+    },
+    {
+      "path": "SystemCode/model/e0_mac/test_e0.py",
+      "sha256": "93324829ccde7dd46c99ff9d252fb2790a5da74d6949ea469861c0c36501c570",
+      "bytes": 1722
+    },
+    {
+      "path": "SystemCode/model/e0_mac/requirements-e0-mac.txt",
+      "sha256": "cf6f234676ffaa8c2dd9f254800f7d50bde4630b448cf5dbeb59960b96ea7e24",
+      "bytes": 155
+    },
+    {
+      "path": "SystemCode/model/e0_mac/VALIDATION.md",
+      "sha256": "5c093deee1d674d4ff9449b955bbcd85e4bdfb2b0b671b4f926bc040c07b88b3",
+      "bytes": 1136
+    },
+    {
+      "path": "SystemCode/model/e0_mac/run_e0.py",
+      "sha256": "6175a919a3fed0d5e6e70d4b882a58e0f784f00e19d637070c529d5fd6bd8c65",
+      "bytes": 19435
+    },
+    {
+      "path": "SystemCode/model/e0_mac/README_E0_MAC.md",
+      "sha256": "bd7b44e01d64fb976dede0f689256215b88bf079b559288e4e5d419121c0b82c",
+      "bytes": 8659
+    },
+    {
+      "path": "SystemCode/model/e1_mac/e0_protocol.py",
+      "sha256": "1b6d0c7e958eec56674e3983499ecc1e27ff50534aec661688fd398ef7fa3581",
+      "bytes": 6882
+    },
+    {
+      "path": "SystemCode/model/e1_mac/requirements-e1-mac.txt",
+      "sha256": "69828168270e2645d351925a1f34b99d5179974d3011faa98d64367577cf3b54",
+      "bytes": 189
+    },
+    {
+      "path": "SystemCode/model/e1_mac/check_device.py",
+      "sha256": "a5fd74cbb10e49df9ae52d4754a5e31efcad34589b096e2211a1f4fa695a6c1d",
+      "bytes": 1795
+    },
+    {
+      "path": "SystemCode/model/e1_mac/test_e1.py",
+      "sha256": "7ba48b0c302b735fdc971b525d006a3275473939db34bfc8ea01038b55eb544b",
+      "bytes": 6223
+    },
+    {
+      "path": "SystemCode/model/e1_mac/README_E1_MAC.md",
+      "sha256": "0cec443ef7b6e1d4ae56fef5af1f254fe9a391894f8e63d29b116558ffc90716",
+      "bytes": 11117
+    },
+    {
+      "path": "SystemCode/model/e1_mac/VALIDATION.md",
+      "sha256": "d99407aadc6dd9ec1d55b42219baa7fc23a81f76c69fb46f9e56f1e65215850f",
+      "bytes": 3256
+    },
+    {
+      "path": "SystemCode/model/e1_mac/unet.py",
+      "sha256": "2615c13687462a5b7e9f89865728970cd7a4897bb559e86f93326145ac0a85dc",
+      "bytes": 2065
+    },
+    {
+      "path": "SystemCode/model/e1_mac/run_e1.py",
+      "sha256": "b3eb43e57f7997089d05b1150188999376f3c5160943302d02a901e5c619b41b",
+      "bytes": 32231
+    },
+    {
+      "path": "SystemCode/model/v3_windows/run_v3.py",
+      "sha256": "ca50f0a7c346235068cdc1a5303b46125354c6c6b0dfb505892ff1ddc8bad830",
+      "bytes": 16471
+    },
+    {
+      "path": "SystemCode/model/v3_windows/requirements.txt",
+      "sha256": "611b87d21026c1840651efab66367fef8f3de165d770b674e068a67c4a317590",
+      "bytes": 29
+    },
+    {
+      "path": "SystemCode/model/v3_windows/01_check_and_smoke.cmd",
+      "sha256": "79a5662d29cf011388909f93d9c2ccfb7decfd3729741dd4ce6ecfe0321f8505",
+      "bytes": 302
+    },
+    {
+      "path": "SystemCode/model/v3_windows/02_run_full.cmd",
+      "sha256": "97e699507e7229a53d3356456779731a38677933bd0b3f9555a640aa675cb0e4",
+      "bytes": 143
+    },
+    {
+      "path": "SystemCode/model/v3_windows/README.md",
+      "sha256": "4ee2df7a82fbfe8d29515b908b0cbe54a26a53dbfb87db2f4ceb9180d6f25e87",
+      "bytes": 8178
+    },
+    {
+      "path": "SystemCode/model/v3_windows/test_v3.py",
+      "sha256": "fd846ea1442822925323f2d5b628115acd8d0f4a351861b84caa4fd39c664687",
+      "bytes": 5487
+    },
+    {
+      "path": "SystemCode/model/lib/pvt.py",
+      "sha256": "aa34ef3da7dcad9db95f757a3326e2b6b8839a14f7aadb34fab555bda4f0d1d9",
+      "bytes": 8024
+    },
+    {
+      "path": "SystemCode/model/lib/pvtv2.py",
+      "sha256": "bad9a96bca9841679b5f7a5a97bf9bbc4239611fb4be6d0ba0783f64e4f9dc8c",
+      "bytes": 17279
+    },
+    {
+      "path": "SystemCode/model/lib/Readme.md",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1
+    },
+    {
+      "path": "SystemCode/model/e2_windows/run_e2.py",
+      "sha256": "28232d1bd096765941d67a175b5bd8366a2550dcbd26b49a8b8937dc38ac1c85",
+      "bytes": 16297
+    },
+    {
+      "path": "SystemCode/model/e2_windows/e0_protocol.py",
+      "sha256": "34007b62ca6a2d529c9b738b7216b2d59b3c640b04f9bcb18d70b75b6c1790c8",
+      "bytes": 6906
+    },
+    {
+      "path": "SystemCode/model/e2_windows/check_device.py",
+      "sha256": "a9ad53f36d8b76db9348d4c0803ef5e46ae0b71dee53a131681822a288d952ed",
+      "bytes": 2624
+    },
+    {
+      "path": "SystemCode/model/e2_windows/models.py",
+      "sha256": "af56b30e60d23c6ae3260b4dabf4d0c6d7d64a4329d9220a27703691eeb164c3",
+      "bytes": 4537
+    },
+    {
+      "path": "SystemCode/model/e2_windows/01_check_and_smoke.cmd",
+      "sha256": "dfe148a91abcafe47bdb54f19a88a8ac14537d8e111a84fb4ed48ea1db5bf7e7",
+      "bytes": 470
+    },
+    {
+      "path": "SystemCode/model/e2_windows/E2_\u64cd\u4f5c\u8bf4\u660e.md",
+      "sha256": "3c662ba29deb9da02762c9447cff80e97ffc292e5d5553ecc57951be78284db6",
+      "bytes": 16292
+    },
+    {
+      "path": "SystemCode/model/e2_windows/02_train_development.cmd",
+      "sha256": "69bcc3ad4f41becbd5aa26df8f2a8947758beec80163907979cce6d83c9160dd",
+      "bytes": 649
+    },
+    {
+      "path": "SystemCode/model/e2_windows/README.md",
+      "sha256": "0256808e72eb23c9fbba75ef5e0b63705ae7f695073539e799d3e93439e89775",
+      "bytes": 315
+    },
+    {
+      "path": "SystemCode/model/e2_windows/requirements-common.txt",
+      "sha256": "611b87d21026c1840651efab66367fef8f3de165d770b674e068a67c4a317590",
+      "bytes": 29
+    },
+    {
+      "path": "SystemCode/model/e2_windows/engine.py",
+      "sha256": "c6dd05355e26b022d112f8a2a6a32ec5ce41f28e1f04e96c1c6e5b3cdaeddae5",
+      "bytes": 23972
+    },
+    {
+      "path": "SystemCode/model/e2_windows/04_evaluate_cuda.cmd",
+      "sha256": "708abacb274fe9a2867b2df4810e389f48a18284faed3f16a797062e9fc21e7f",
+      "bytes": 183
+    },
+    {
+      "path": "SystemCode/model/e2_windows/original_unet.py",
+      "sha256": "2615c13687462a5b7e9f89865728970cd7a4897bb559e86f93326145ac0a85dc",
+      "bytes": 2065
+    },
+    {
+      "path": "SystemCode/model/e2_windows/requirements-windows.txt",
+      "sha256": "6a8191e008a85ad4800fe59673bd791efa53a4c2114e34462da650d999814bba",
+      "bytes": 267
+    },
+    {
+      "path": "SystemCode/model/e2_windows/test_e2.py",
+      "sha256": "d416f458a50ef6f8e0ed0215349714c58988661b5efee0f5d9ea7449ffe099ce",
+      "bytes": 8750
+    },
+    {
+      "path": "SystemCode/model/e2_windows/03_select_and_train_final.cmd",
+      "sha256": "8f2bf3993d587d6089552ecdc0bc9af3d9421742a5adfbe2a3a02d63f87c670e",
+      "bytes": 392
+    },
+    {
+      "path": "SystemCode/model/e2_windows/data.py",
+      "sha256": "17b17519a31aed5e555a9f9f09f18fa3a1a40b4e584736ca2fb79f73f61b87c4",
+      "bytes": 11629
+    },
+    {
+      "path": "SystemCode/model/e2_windows/metadata_template.csv",
+      "sha256": "b69e8edf8c3796f96da3d38e032b40f5958f2c92ab4c7690321a5a331aa7e65b",
+      "bytes": 48735
+    }
+  ]
+}

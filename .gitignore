@@ -1,0 +1,36 @@
+# Local data and generated runs (curated evidence lives in Miscellaneous/)
+/SystemCode/model/dataset/
+/SystemCode/model/runs/
+/SystemCode/model/model_pth/
+/SystemCode/model/pretrained_pth/
+/SystemCode/model/e2_weights/
+/SystemCode/model/result_map/
+# Large model / probability artifacts anywhere
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.npz
+*.npy
+*.zip
+*.tar
+*.tar.gz
+# Local Python environments / caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.DS_Store
+Thumbs.db
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.vscode/
+.idea/
