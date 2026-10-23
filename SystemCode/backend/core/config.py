@@ -3,7 +3,9 @@ import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-MAX_UPLOAD = 100 * 1024**2
+# File size is not the processing-time limit. Duration (15 min) and the
+# 600-frame sample cap bound inference. 512MiB fits the current local clips.
+MAX_UPLOAD = 512 * 1024**2
 WARNINGS = [
     "RESEARCH_DEMO_NOT_CLINICAL",
     "POSITIVE_ONLY_MODEL:NO_NEGATIVE_FRAME_SPECIFICITY_CLAIM",

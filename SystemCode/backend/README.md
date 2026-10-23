@@ -11,7 +11,8 @@ route registration boundary. `main.py` is the application entrypoint; `app.py`
 remains a compatibility import for existing commands.
 
 It is a research/teaching integration service, not a clinical or public-facing
-deployment. The service supports H264 MP4 uploads, PTS-based sampling,
+deployment. The service accepts MP4, MOV, M4V, AVI, and MKV uploads up to 512MiB,
+converts them to H264 MP4, then does PTS-based sampling,
 asynchronous frame inference, AI masks, human mask review, reports, and CSV or
 JSON metadata exports.
 

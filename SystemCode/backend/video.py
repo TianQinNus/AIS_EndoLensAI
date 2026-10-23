@@ -18,6 +18,64 @@ def validate_frame(frame):
         raise ValueError("Rotation/display matrix unsupported; transcode to upright square-pixel H264 MP4")
 
 
+def convert_to_h264_mp4(source, destination):
+    """Write an H264 MP4. H264 input is copied; any other video codec is transcoded."""
+    source, destination = Path(source), Path(destination)
+    if destination.exists():
+        raise FileExistsError(destination)
+    container = av.open(str(source), options={"protocol_whitelist": "file", "enable_drefs": "0"})
+    try:
+        if not container.streams.video:
+            raise ValueError("No video stream")
+        stream = container.streams.video[0]
+        if stream.codec_context.width * stream.codec_context.height > MAX_PIXELS:
+            raise ValueError("Only frames up to1080p supported in this starter")
+        if stream.codec_context.name == "h264":
+            _remux_h264(container, stream, destination)
+        else:
+            _transcode_h264(container, stream, destination)
+    except Exception:
+        if destination.exists():
+            destination.unlink()
+        raise
+    finally:
+        container.close()
+
+
+def _remux_h264(container, stream, destination):
+    output = av.open(str(destination), mode="w", format="mp4")
+    try:
+        out_stream = output.add_stream_from_template(stream)
+        for packet in container.demux(stream):
+            if packet.dts is None:
+                continue
+            packet.stream = out_stream
+            output.mux(packet)
+    finally:
+        output.close()
+
+
+def _transcode_h264(container, stream, destination):
+    output = av.open(str(destination), mode="w", format="mp4")
+    try:
+        rate = stream.average_rate or stream.base_rate or 25
+        out_stream = output.add_stream("libx264", rate=rate)
+        out_stream.width = stream.codec_context.width
+        out_stream.height = stream.codec_context.height
+        out_stream.pix_fmt = "yuv420p"
+        out_stream.options = {"preset": "veryfast", "crf": "18", "bf": "0"}
+        for frame in container.decode(stream):
+            image = frame.reformat(format="yuv420p")
+            image.pts = frame.pts
+            image.time_base = frame.time_base
+            for packet in out_stream.encode(image):
+                output.mux(packet)
+        for packet in out_stream.encode():
+            output.mux(packet)
+    finally:
+        output.close()
+
+
 def open_video(path):
     container = av.open(str(Path(path)), options={"protocol_whitelist":"file","enable_drefs":"0"})
     if "mov" not in container.format.name:
@@ -61,8 +119,12 @@ def decoded(path, origin):
             if index >= MAX_DECODED_FRAMES or frame.pts is None:
                 raise ValueError("Decode limit exceeded or missing PTS")
             seconds = float(frame.pts*frame.time_base)-origin
-            if not math.isfinite(seconds) or seconds < -1e-6 or seconds > MAX_DURATION or previous is not None and seconds <= previous:
+            if not math.isfinite(seconds) or seconds < -1e-6 or seconds > MAX_DURATION:
                 raise ValueError("Invalid/non-increasing video PTS")
+            if previous is not None and seconds <= previous:
+                if seconds < previous-1e-4:
+                    raise ValueError("Invalid/non-increasing video PTS")
+                continue
             previous = seconds
             yield index, max(0., seconds), frame
     finally:

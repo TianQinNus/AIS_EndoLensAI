@@ -126,11 +126,11 @@ function AnalysisPage() {
     <div>
       <section className="mb-2 flex flex-wrap items-center gap-3 rounded-md border border-slate-200 bg-white p-3 shadow-sm">
         <label className="cursor-pointer rounded bg-[#1677f2] px-3 py-2 text-xs font-medium text-white">
-          {busy ? 'Uploading…' : 'Upload H264 MP4'}
+          {busy ? 'Uploading…' : 'Upload video'}
           <input
             className="hidden"
             type="file"
-            accept=".mp4,video/mp4"
+            accept=".mp4,.mov,.m4v,.avi,.mkv,video/mp4,video/x-msvideo,video/quicktime,video/x-matroska"
             disabled={busy}
             onChange={(event) => {
               const file = event.target.files?.[0]
@@ -152,7 +152,7 @@ function AnalysisPage() {
       </section>
       {!video ? (
         <div className="rounded-md border border-dashed border-slate-300 bg-white p-12 text-center text-sm text-slate-500">
-          Upload a recorded H264 MP4 to begin analysis.
+          Upload a recorded video. AVI, MOV, and MKV are converted to H264 MP4.
         </div>
       ) : (
         <>
