@@ -36,3 +36,7 @@ class InferenceService:
         thumbnail = source.copy()
         thumbnail.thumbnail((320, 180), Image.Resampling.BILINEAR)
         return thumbnail
+
+    @staticmethod
+    def mask_image(result) -> Image.Image:
+        return Image.fromarray(result.binary_mask * 255, mode="L")
