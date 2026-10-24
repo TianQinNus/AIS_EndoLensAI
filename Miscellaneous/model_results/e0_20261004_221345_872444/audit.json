@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "merged_count": 798,
+  "mapped_count": 798,
+  "counts": {
+    "Kvasir": 100,
+    "CVC-ClinicDB": 62,
+    "CVC-ColonDB": 380,
+    "ETIS-LaribPolypDB": 196,
+    "CVC-300": 60
+  },
+  "duplicate_decoded_image_groups": 76,
+  "checks": "paired stems, expected counts, full membership, decoded RGB equality, binary mask equality, dimensions",
+  "errors": []
+}
