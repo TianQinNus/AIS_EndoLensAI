@@ -1,0 +1,59 @@
+{
+  "status": "COMPLETED",
+  "checkpoint": "/Users/tianqin-gg/Desktop/AIS_EndoLensAI/outputs/polypgen_noshrink_20261027/train/best.pt",
+  "checkpoint_sha256": "eceb2998b8be188cae15c7d568cc13d842a925541a1b0f27f830c5a38d9ac17d",
+  "checkpoint_epoch": 11,
+  "checkpoint_config": {
+    "base": 32,
+    "size": 384,
+    "architecture": "ImageNet V2 ResNet50 U-Net; GN decoder; frozen BN running stats; trainable encoder",
+    "initialization": "official ImageNet V2 encoder; seed42 random decoder",
+    "encoder_sha256": "11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca",
+    "input": "RGB /255 then embedded ImageNet mean/std",
+    "validation_resolution": 256,
+    "threshold": 0.5,
+    "dev_train_sha256": "6f43ea36bfceeda661d61e5cfe71665d59bc26611b6f09d474a1c7e1d0800ad8",
+    "validation_sha256": "2cd2c2ee94ad4e6b28d83193b39dd839ef4b61595ba79f17edf7258475372351",
+    "epochs": 50,
+    "lr": 1e-05,
+    "batch_size": 8,
+    "device": "mps",
+    "photometric": true,
+    "training_sizes": [
+      384
+    ],
+    "microbatch_size": 2,
+    "initialization_sha256": "2ca38315b393a66c21d904a760d097b12a4b2e0a7a17090d7058ef642df3edab",
+    "initialization_epoch": 5,
+    "source_sha256": "0a4096b65472834a94f76ad0d4da916716dd64b19c601655e3502a81ab2ea3dc",
+    "data_source_sha256": "9cd7163316424f6a66b0b4d02f8632411c4ee2c81f0611cda1ddcd42ad250f4d",
+    "architecture_sha256": "cca11778e4a10057dff9045deb8ea39c350bfbbc53ca46de25d26c5c2f2adfda",
+    "schedule": "cosine from initial LR to 10%, new AdamW optimizer",
+    "selection": "maximum validation Dice, including unchanged initial checkpoint",
+    "added_augmentation": "p=.5 saturation U(.5,1.5); p=.5 gamma U(.7,1.5)",
+    "torch_version": "2.8.0",
+    "loss_policy": "original BCE+Dice+.2boundary",
+    "sampling": "replacement1160/epoch; original .5, each C1-C4 .125; uniform within source",
+    "shrink_augmentation": false
+  },
+  "source_sha256": "b84deb0339621f2dfaeb7f1a280fb86981d93f8eff621e34fb96498759eba7b3",
+  "architecture_sha256": "cca11778e4a10057dff9045deb8ea39c350bfbbc53ca46de25d26c5c2f2adfda",
+  "manifests": {
+    "dev_train": "6f43ea36bfceeda661d61e5cfe71665d59bc26611b6f09d474a1c7e1d0800ad8",
+    "validation": "2cd2c2ee94ad4e6b28d83193b39dd839ef4b61595ba79f17edf7258475372351",
+    "test": "0550beb1bb342398901acd21dd76c44a7f35523977515944b9ff067daf474d81"
+  },
+  "candidates": [
+    "identity",
+    "flip4",
+    "rotate4"
+  ],
+  "threshold": 0.5,
+  "selection": "Highest validation per-image binary mean Dice at 256; ties prefer identity",
+  "evaluation": "PolypGen C6 83-image set; initialized from previously trained model; native-mask resolution; image-weighted mean Dice; no test selection",
+  "torch_version": "2.8.0",
+  "device": "mps",
+  "selected": "flip4",
+  "target_reached": true,
+  "elapsed_seconds": 246.88469982147217
+}

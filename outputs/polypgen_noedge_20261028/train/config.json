@@ -1,0 +1,33 @@
+{
+  "base": 32,
+  "size": 384,
+  "architecture": "ImageNet V2 ResNet50 U-Net; GN decoder; frozen BN running stats; trainable encoder",
+  "initialization": "official ImageNet V2 encoder; seed42 random decoder",
+  "encoder_sha256": "11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca",
+  "input": "RGB /255 then embedded ImageNet mean/std",
+  "validation_resolution": 256,
+  "threshold": 0.5,
+  "dev_train_sha256": "6f43ea36bfceeda661d61e5cfe71665d59bc26611b6f09d474a1c7e1d0800ad8",
+  "validation_sha256": "2cd2c2ee94ad4e6b28d83193b39dd839ef4b61595ba79f17edf7258475372351",
+  "epochs": 30,
+  "lr": 1e-05,
+  "batch_size": 8,
+  "device": "mps",
+  "photometric": true,
+  "training_sizes": [
+    384
+  ],
+  "microbatch_size": 2,
+  "initialization_sha256": "eceb2998b8be188cae15c7d568cc13d842a925541a1b0f27f830c5a38d9ac17d",
+  "initialization_epoch": 11,
+  "source_sha256": "206c0756c9d95dc07da28f23d798a39daf02ff83458282c53c615711759ec84f",
+  "data_source_sha256": "9cd7163316424f6a66b0b4d02f8632411c4ee2c81f0611cda1ddcd42ad250f4d",
+  "architecture_sha256": "cca11778e4a10057dff9045deb8ea39c350bfbbc53ca46de25d26c5c2f2adfda",
+  "schedule": "cosine from initial LR to 10%, new AdamW optimizer",
+  "selection": "maximum validation Dice, including unchanged initial checkpoint",
+  "added_augmentation": "p=.5 saturation U(.5,1.5); p=.5 gamma U(.7,1.5)",
+  "torch_version": "2.8.0",
+  "loss_policy": "BCE+Dice; boundary coefficient zero",
+  "sampling": "replacement1160/epoch; original .5, each C1-C4 .125; uniform within source",
+  "shrink_augmentation": false
+}

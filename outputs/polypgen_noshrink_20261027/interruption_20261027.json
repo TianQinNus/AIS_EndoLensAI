@@ -1,0 +1,8 @@
+{
+  "reason": "Processes absent; log stopped during epoch37; cause unknown",
+  "resume_epoch": 36,
+  "previous_status": {
+    "status": "TRAINING",
+    "protocol": "2269 train,494 validation,83 C6; replacement1160 per epoch; 50 epochs; input384 LR1e-5 to1e-6 from384 best; no shrink-black-padding augmentation"
+  }
+}

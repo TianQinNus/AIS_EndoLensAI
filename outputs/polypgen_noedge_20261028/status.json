@@ -1,0 +1,4 @@
+{
+  "status": "TRAINING",
+  "protocol": "2269 train,494 validation,83 C6; replacement1160 per epoch; 30 epochs; input384 LR1e-5 to1e-6 from noshrink best; BCE+Dice without boundary loss; retain no-shrink augmentation"
+}

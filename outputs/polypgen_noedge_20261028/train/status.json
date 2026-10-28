@@ -1,0 +1,8 @@
+{
+  "status": "RUNNING",
+  "initial_val_dice": 0.8567066067143491,
+  "best_val_dice": 0.8567066067143491,
+  "epoch": 12,
+  "step": 90,
+  "completed_epochs": 11
+}

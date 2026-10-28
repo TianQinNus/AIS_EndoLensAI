@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\titleformat{\section}{\normalsize\bfseries}{\thesection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\pagestyle{plain}
+\begin{document}
+\begin{center}
+{\Large\bfseries Individual Project Report}\\[4pt]
+{\normalsize Pattern Recognition Systems}\par
+\end{center}
+\textbf{Student Name:} Zhang Tianqin\\
+\textbf{Matriculation No.:} \underline{\hspace{4cm}}\\
+\textbf{NUS Email:} \href{mailto:tianqin.zhang@u.nus.edu}{tianqin.zhang@u.nus.edu}\\
+\textbf{Group Number:} \underline{\hspace{2cm}}\\
+\textbf{Project Title:} \textit{EndoLens AI: Hybrid Polyp Segmentation for Live Colonoscopy Video Analysis}
+
+\section{Personal Contribution to the Group Project}
+My contribution to EndoLens AI covered the initial idea discussions, product functionality design, machine learning development and evaluation, and support for model integration. In the planning discussions, I helped connect the proposed live video analysis workflow with the model's role: producing segmentation masks that could be displayed as polyp outlines. This gave me an opportunity to contribute to both the product concept and its technical implementation.
+
+My main responsibility was developing and investigating the segmentation models. Across the project, I completed 34 training experiments and six additional inference and ensemble studies. These covered basic U-Net, U-Net++, and U-Net models with ResNet-34, ResNet-50, and ResNeXt-50 encoders. I explored both training from random initialization and fine-tuning pretrained encoders, comparing how architecture and initialization affected performance. Beyond model selection, I tested normalization, network width, learning-rate schedules, training duration, input resolution, boundary loss, and several augmentation strategies. I maintained checkpoints, configurations, training histories, and evaluation records so that the results could be traced to their corresponding settings.
+
+I also examined segmentation failures, including missed small polyps and predictions on surrounding tissue. These observations motivated experiments with scale augmentation and contextual features. On the original 798-image evaluation set, the best completed single-model result reached a mean per-image Dice score of 0.8310. I then extended the training data with PolypGen, using fixed centre-based splits and source-balanced sampling. The joint training experiments used 2,269 training images, 494 validation images, and a separate 83-image C6 evaluation set. The highest observed C6 mean Dice was 0.8839. These results concern different evaluation sets and are therefore reported separately; both sets were inspected during development rather than treated as untouched final tests.
+
+To support model integration, I helped prepare inference code and package the model weights, preprocessing settings, and output-generation procedure. This included producing an image overlay showing the predicted mask boundary and documenting how a saved checkpoint should be loaded and used. I also contributed to the decision to extend training with negative samples. Our positive-image training setup did not adequately represent video frames without polyps, making predictions on normal tissue an important limitation. I prepared the model handover and training recommendations for this extension, while keeping it distinct from the experiments already completed.
+
+\section{Most Useful Knowledge and Skills Gained}
+The most useful technical lesson was understanding how architecture, optimization, and data interact. Before this project, I expected a deeper or more complex model to provide a fairly direct improvement. Comparing U-Net variants and different encoders showed me that additional depth alone does not determine the outcome. Initialization, normalization, learning rate, and the available training data can substantially change how effectively a model learns. For example, introducing group normalization produced a larger improvement in our early experiments than several architectural modifications. This helped me understand why diagnosing the training setup is as important as choosing a model family.
+
+I developed a more practical understanding of fine-tuning and augmentation. Working with pretrained encoders taught me to distinguish between updating model parameters and updating batch-normalization running statistics. Our encoder and decoder remained trainable while the encoder's running statistics were frozen. Augmentation experiments also showed that transformations need to reflect plausible variation in the images. Changes to scale, rotation, brightness, saturation, and gamma did not produce consistent gains across architectures. Rather than assuming that stronger augmentation was always beneficial, I learned to formulate a specific reason for each change and examine its effect.
+
+The dataset work changed how I understood the task itself. Segmenting a polyp in a selected positive image does not cover every situation encountered in a video. A useful system must also handle frames where no polyp is present. Recognizing this gap helped me see negative samples as part of defining the learning problem, rather than simply adding more data. Preparing the integration package reinforced another practical lesson: a checkpoint is only usable when its architecture, preprocessing, threshold, and output handling are clearly specified.
+
+\section{Application to Other Situations and Future Work}
+I can apply this experience to other computer vision tasks, such as industrial defect detection, where a system must distinguish genuine defects from normal surfaces. I would begin by checking whether the dataset represents both the target objects and the situations where they are absent, then establish a baseline before testing more complex models. The experience of maintaining fixed splits and recording experimental settings will help me make comparisons that colleagues can reproduce and review.
+
+In a workplace, I would also use the integration and communication skills developed through this project. Explaining a model's inputs, outputs, limitations, and required preprocessing makes it easier for other developers to incorporate it into an application. Contributing across product discussions, experimentation, and model handover taught me to connect technical decisions with the needs of the wider team. I now approach machine learning development as a process of defining the problem carefully, investigating alternatives systematically, and delivering a model that others can understand and use.
+\end{document}
