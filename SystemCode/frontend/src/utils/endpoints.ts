@@ -6,7 +6,7 @@ import type {
   BackendVideo,
 } from './dataQueries'
 
-export const MODEL_VERSION = 'unet-b-expanded-seed42-r98-v1'
+export const MODEL_VERSION = 'e13-r50-joint-r94-r4-region080-v2'
 export const TASK_STORAGE_KEY = 'endolensTaskId'
 
 export const apiBaseUrl = (
@@ -104,7 +104,7 @@ export function exportCsv(taskId: string) {
   return request<{ download_url: string }>(`/analyses/${taskId}/exports`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ format: 'csv', include_reviewed_masks: true }),
+    body: JSON.stringify({ format: 'csv', include_reviewed_masks: false }),
   })
 }
 

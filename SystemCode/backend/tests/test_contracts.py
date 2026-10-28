@@ -38,12 +38,14 @@ class PostprocessingTests(unittest.TestCase):
         self.assertFalse(result.is_candidate);self.assertIsNone(result.foreground_score)
         self.assertEqual(result.max_region_area_ratio,0.)
 
-    def test_area_gate_never_deletes_small_mask(self):
-        p=np.zeros((100,100),np.float32);p[30:32,50:52]=.9
-        result=postprocess(p,min_region_area_ratio=.01)
-        self.assertFalse(result.is_candidate);self.assertEqual(int(result.binary_mask.sum()),4)
-        self.assertAlmostEqual(result.foreground_score,.9,places=6)
+    def test_low_mean_region_is_removed_and_area_gate_is_fixed(self):
+        p=np.zeros((30,40),np.float32);p[3:10,5:12]=.79
+        result=postprocess(p)
+        self.assertFalse(result.is_candidate)
+        self.assertEqual(int(result.binary_mask.sum()),0)
+        self.assertIsNone(result.foreground_score)
         self.assertEqual(result.binary_mask.dtype,np.uint8)
+        with self.assertRaises(ValueError):postprocess(p,min_region_area_ratio=.01)
 
     def test_components_coordinates_holes_and_limits(self):
         p=np.zeros((40,70),np.float32);p[5:20,30:50]=.8;p[8:12,34:38]=0

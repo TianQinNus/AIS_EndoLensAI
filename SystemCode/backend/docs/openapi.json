@@ -587,9 +587,9 @@
           },
           "model_version": {
             "type": "string",
-            "const": "unet-b-expanded-seed42-r98-v1",
+            "const": "e13-r50-joint-r94-r4-region080-v2",
             "title": "Model Version",
-            "default": "unet-b-expanded-seed42-r98-v1"
+            "default": "e13-r50-joint-r94-r4-region080-v2"
           }
         },
         "additionalProperties": false,
