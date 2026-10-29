@@ -223,6 +223,63 @@ class APITests(unittest.TestCase):
         )
         self.assertEqual(unreadable.status_code, 422)
 
+    def test_live_session_writes_the_recorded_report(self):
+        self.start()
+        video = self.upload()
+        opened = self.client.post("/api/v1/live/sessions", json={"video_id": video["video_id"]})
+        self.assertEqual(opened.status_code, 201, opened.text)
+        task = opened.json()["task_id"]
+        self.assertEqual(self.client.get(f"/api/v1/analyses/{task}").json()["status"], "running")
+        image = Image.fromarray(np.zeros((48, 64, 3), np.uint8))
+        buffer = io.BytesIO()
+        image.save(buffer, "JPEG")
+        payload = buffer.getvalue()
+        for index, timestamp in ((0, 0.0), (3, 1.5)):
+            saved = self.client.post(
+                "/api/v1/live/frames",
+                files={"file": ("frame.jpg", payload, "image/jpeg")},
+                data={"frame_index": str(index), "timestamp_seconds": str(timestamp), "task_id": task},
+            )
+            self.assertEqual(saved.status_code, 200, saved.text)
+        duplicate = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "3", "timestamp_seconds": "1.5", "task_id": task},
+        )
+        self.assertEqual(duplicate.status_code, 200, duplicate.text)
+        self.assertEqual(self.client.get(f"/api/v1/analyses/{task}").json()["status"], "running")
+        finished = self.client.post(f"/api/v1/live/sessions/{task}/finish")
+        self.assertEqual(finished.status_code, 200, finished.text)
+        self.assertEqual(finished.json()["status"], "completed")
+        self.assertEqual(self.client.post(f"/api/v1/live/sessions/{task}/finish").json()["status"], "completed")
+        report = self.client.get(f"/api/v1/analyses/{task}/report").json()
+        self.assertEqual(report["status"], "completed")
+        self.assertEqual(report["video"]["filename"], "demo.mp4")
+        self.assertEqual(report["summary"]["analyzed_frames"], 2)
+        self.assertEqual(report["summary"]["candidate_frames"], 2)
+        self.assertEqual(report["summary"]["failed_frames"], 0)
+        self.assertEqual(report["candidate_timestamps_seconds"], [0.0, 1.5])
+        page = self.client.get(f"/api/v1/analyses/{task}/frames?candidate_only=true").json()
+        self.assertEqual([row["frame_index"] for row in page["items"]], [0, 3])
+        row = page["items"][0]
+        self.assertEqual(self.client.get(row["source_frame_url"]).status_code, 200)
+        self.assertEqual(self.client.get(row["mask_url"]).status_code, 200)
+        exported = self.client.post(f"/api/v1/analyses/{task}/exports", json={"format": "csv", "include_reviewed_masks": False}).json()
+        self.assertEqual(self.client.get(exported["download_url"]).status_code, 200)
+        rejected = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "4", "timestamp_seconds": "2", "task_id": task},
+        )
+        self.assertEqual(rejected.status_code, 409)
+        recorded = self.task(video["video_id"])
+        foreign = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "1", "timestamp_seconds": "0", "task_id": recorded},
+        )
+        self.assertEqual(foreign.status_code, 409)
+
     def test_page_refresh_and_server_restart_recovery(self):
         self.start();video=self.upload();task=self.task(video["video_id"]);self.wait(task)
         self.client.__exit__(None,None,None);self.client=None

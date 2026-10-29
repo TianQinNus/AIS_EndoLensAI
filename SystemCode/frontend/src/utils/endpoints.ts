@@ -59,12 +59,28 @@ export function inferLiveFrame(
   frameIndex: number,
   timestampSeconds: number,
   signal?: AbortSignal,
+  taskId?: string,
 ): Promise<LiveFrameResult> {
   const form = new FormData()
   form.append('file', file, 'frame.jpg')
   form.append('frame_index', String(frameIndex))
   form.append('timestamp_seconds', timestampSeconds.toFixed(6))
+  if (taskId) form.append('task_id', taskId)
   return request<LiveFrameResult>('/live/frames', { method: 'POST', body: form, signal })
+}
+
+export function startLiveSession(videoId: string) {
+  return request<{ task_id: string; video_id: string; status: string }>('/live/sessions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ video_id: videoId }),
+  })
+}
+
+export function finishLiveSession(taskId: string) {
+  return request<{ task_id: string; status: string }>(`/live/sessions/${taskId}/finish`, {
+    method: 'POST',
+  })
 }
 
 export function startAnalysis(videoId: string, intervalSeconds = 1): Promise<{ task_id: string }> {

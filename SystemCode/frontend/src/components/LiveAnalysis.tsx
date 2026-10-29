@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { assetUrl, inferLiveFrame, uploadVideo } from '../utils/endpoints'
+import {
+  TASK_STORAGE_KEY,
+  assetUrl,
+  finishLiveSession,
+  inferLiveFrame,
+  startLiveSession,
+  uploadVideo,
+} from '../utils/endpoints'
 
 const MAX_EDGE = 1280
 const CANDIDATE_LIMIT = 16
@@ -188,6 +195,7 @@ export function LiveAnalysis() {
   const abortRef = useRef(new AbortController())
   const generation = useRef(0)
   const requestLock = useRef(false)
+  const lockOwner = useRef(0)
   const lastSent = useRef(-1)
   const skipped = useRef(0)
   const startedAt = useRef<number | null>(null)
@@ -200,6 +208,11 @@ export function LiveAnalysis() {
   const localFile = useRef<File | null>(null)
   const fileToken = useRef(0)
   const converting = useRef(false)
+  const sessionId = useRef('')
+  const inflight = useRef<Promise<void> | null>(null)
+  const closer = useRef<Promise<void> | null>(null)
+  const announceClose = useRef(false)
+  const closeSessionRef = useRef<(announce: boolean) => Promise<void>>(async () => undefined)
   const [source, setSource] = useState('')
   const [fileName, setFileName] = useState('')
   const [playing, setPlaying] = useState(false)
@@ -211,19 +224,48 @@ export function LiveAnalysis() {
   const [stats, setStats] = useState<LiveStats>(emptyStats)
   const [error, setError] = useState('')
   const [preparing, setPreparing] = useState('')
+  const [reportNote, setReportNote] = useState('')
 
   useEffect(() => {
     pinnedRef.current = pinned
   }, [pinned])
+
+  const closeSession = (announce: boolean) => {
+    if (announce) announceClose.current = true
+    if (closer.current) return closer.current
+    closer.current = (async () => {
+      try {
+        if (inflight.current) await inflight.current.catch(() => undefined)
+        const id = sessionId.current
+        sessionId.current = ''
+        if (id) {
+          await finishLiveSession(id)
+          if (announceClose.current) {
+            setReportNote('Report saved. Open Reports to view candidate frames.')
+          }
+        }
+      } catch (reason) {
+        if (announceClose.current) {
+          setReportNote(reason instanceof Error ? reason.message : 'Could not save the report')
+        }
+      } finally {
+        announceClose.current = false
+        closer.current = null
+      }
+    })()
+    return closer.current
+  }
+  closeSessionRef.current = closeSession
 
   useEffect(() => {
     const urls = retained.current
     return () => {
       generation.current += 1
       abortRef.current.abort()
+      void closeSessionRef.current(false)
       urls.forEach((url) => URL.revokeObjectURL(url))
       urls.clear()
-      if (sourceRef.current) URL.revokeObjectURL(sourceRef.current)
+      if (sourceRef.current.startsWith('blob:')) URL.revokeObjectURL(sourceRef.current)
     }
   }, [])
 
@@ -243,6 +285,8 @@ export function LiveAnalysis() {
     if (!video || !source || !playing) return
     let stopped = false
     let newest: { frameIndex: number; timestamp: number } | null = null
+    lockOwner.current += 1
+    requestLock.current = false
     const pump = () => {
       if (stopped || requestLock.current || !newest || newest.frameIndex === lastSent.current) return
       const grabbed = grabFrame(video)
@@ -252,13 +296,15 @@ export function LiveAnalysis() {
         const gap = meta.frameIndex - lastSent.current - 1
         if (gap > 0) skipped.current += gap
       }
+      const owner = ++lockOwner.current
       requestLock.current = true
       lastSent.current = meta.frameIndex
       const sentIndex = meta.frameIndex
       const sentTime = meta.timestamp
       const gen = generation.current
       const signal = abortRef.current.signal
-      void (async () => {
+      const taskId = sessionId.current
+      const pending = (async () => {
         let previewUrl = ''
         try {
           const blob = await canvasToJpeg(grabbed.canvas)
@@ -266,7 +312,7 @@ export function LiveAnalysis() {
           previewUrl = URL.createObjectURL(blob)
           if (startedAt.current == null) startedAt.current = performance.now()
           const started = performance.now()
-          const result = await inferLiveFrame(blob, sentIndex, sentTime, signal)
+          const result = await inferLiveFrame(blob, sentIndex, sentTime, signal, taskId || undefined)
           const roundTripMs = performance.now() - started
           const aligned =
             result.frame_index === sentIndex &&
@@ -332,12 +378,13 @@ export function LiveAnalysis() {
           if (signal.aborted || gen !== generation.current) return
           setError(reason instanceof Error ? reason.message : 'Frame inference failed')
         } finally {
-          if (gen === generation.current) {
+          if (lockOwner.current === owner) {
             requestLock.current = false
-            pump()
+            if (gen === generation.current && !stopped) pump()
           }
         }
       })()
+      inflight.current = pending
     }
     const stopWatch = watchPlayback(video, (meta) => {
       newest = meta
@@ -369,6 +416,7 @@ export function LiveAnalysis() {
     setStats(emptyStats)
     setError('')
     setPreparing('')
+    setReportNote('')
     setPlaybackTime(0)
   }
 
@@ -383,6 +431,20 @@ export function LiveAnalysis() {
     try {
       const uploaded = await uploadVideo(file)
       if (token !== fileToken.current) return
+      try {
+        const session = await startLiveSession(uploaded.video_id)
+        if (token !== fileToken.current) {
+          void finishLiveSession(session.task_id)
+          return
+        }
+        sessionId.current = session.task_id
+        localStorage.setItem(TASK_STORAGE_KEY, session.task_id)
+        setReportNote('Analyzed frames are being saved to the report.')
+      } catch (reason) {
+        if (token !== fileToken.current) return
+        sessionId.current = ''
+        setError(reason instanceof Error ? reason.message : 'Could not open a report for this recording')
+      }
       const url = assetUrl(uploaded.video_url)
       if (!url) throw new Error('Converted video has no playback URL')
       sourceRef.current = url
@@ -401,15 +463,21 @@ export function LiveAnalysis() {
 
   const chooseFile = (file: File) => {
     fileToken.current += 1
+    const token = fileToken.current
     converting.current = false
     localFile.current = file
-    resetSession()
-    if (sourceRef.current.startsWith('blob:')) URL.revokeObjectURL(sourceRef.current)
-    sourceRef.current = ''
-    setFileName(file.name)
-    setDuration(0)
-    setSource('')
-    void convertLocalFile()
+    setPlaying(false)
+    void (async () => {
+      await closeSession(false)
+      if (token !== fileToken.current) return
+      resetSession()
+      if (sourceRef.current.startsWith('blob:')) URL.revokeObjectURL(sourceRef.current)
+      sourceRef.current = ''
+      setFileName(file.name)
+      setDuration(0)
+      setSource('')
+      await convertLocalFile()
+    })()
   }
 
   const rate =
@@ -443,13 +511,15 @@ export function LiveAnalysis() {
             {preparing ? 'Converting…' : playing ? 'Pause' : 'Play at original speed'}
           </button>
         )}
+        {reportNote && <span className="text-xs text-[#1677f2]">{reportNote}</span>}
         {error && <span className="text-xs text-red-600">{error}</span>}
       </section>
       <p className="mb-2 rounded-md border border-[#d7e6f8] bg-[#f4f8fd] px-3 py-2 text-xs leading-5 text-[#3d5168]">
         Every recording is converted to MP4 before playback. It then plays at its original speed,
         and each request sends one frame together with its frame number and timestamp. Frames
         presented while a request is in flight are skipped, and the next request sends the newest
-        frame. The mask is drawn on that analyzed frame.
+        frame. The mask is drawn on that analyzed frame. When playback ends, those frames are
+        saved as a report with the same summary and candidate images as a recorded analysis.
       </p>
       {!source ? (
         <div className="rounded-md border border-dashed border-slate-300 bg-white p-12 text-center text-sm text-slate-500">
@@ -481,7 +551,10 @@ export function LiveAnalysis() {
                   onError={() => {
                     if (!preparing) setError('The converted MP4 could not be played.')
                   }}
-                  onEnded={() => setPlaying(false)}
+                  onEnded={() => {
+                    setPlaying(false)
+                    void closeSession(true)
+                  }}
                 />
                 {preparing && (
                   <div className="absolute inset-0 z-[8] flex items-center justify-center bg-white/85 px-6 text-center text-xs text-[#3d5168]">

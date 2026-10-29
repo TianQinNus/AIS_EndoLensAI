@@ -253,7 +253,7 @@ function ReportsPage() {
         </section>
       ) : !report ? (
         <section className="rounded-md border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
-          {error || 'Complete an analysis on the Recorded Video Analysis page to view its saved report.'}
+          {error || 'Complete a saved-video or live analysis to view its saved report.'}
         </section>
       ) : (
         <>
