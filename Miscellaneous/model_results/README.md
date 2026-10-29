@@ -1,7 +1,0 @@
-# 精选实验指标
-
-E0–E4正式运行的summary、per_image、开发验证结果和训练历史，供组员查看与比较。E3以v3_fusion_equal_seed42命名。selection与GPU证明在有本地记录时一同保留。
-
-JSON记录中的机器绝对路径已隐藏；图像清单和权重哈希仍可核对。这里没有权重、优化器、概率、掩膜或完整来源清单，不能将此目录直接当作runs恢复实验。原完整目录须由组内单独迁移。源码的冻结来源见model_artifacts/CODE_IMPORT_MANIFEST.json。
-
-最新结论和下一步设计参阅SystemCode/model/docs/EXPERIMENT_STATUS.md及ProjectReport的E4报告。测试计时属于各次运行，不代表相同硬件同协议的部署速度对比。
