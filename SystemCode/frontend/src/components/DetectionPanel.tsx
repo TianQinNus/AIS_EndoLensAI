@@ -111,7 +111,7 @@ export function DetectionPanel({
               <div>
                 Frame{' '}
                 <b className="float-right text-[#22344d]">
-                  {selected.frameIndex + 1} / {totalFrames ?? '未知'}
+                  {selected.frameIndex + 1} / {totalFrames ?? 'Unknown'}
                 </b>
               </div>
               <div>

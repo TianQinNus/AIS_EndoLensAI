@@ -15,6 +15,21 @@ export const apiBaseUrl = (
 
 export type FrameResult = BackendFrame
 
+export type LiveFrameResult = {
+  frame_index: number
+  timestamp_seconds: number
+  width: number
+  height: number
+  is_candidate: boolean
+  foreground_score: number | null
+  max_region_area_ratio: number
+  inference_time_ms: number
+  device: string
+  model_version: string
+  mask_png_base64: string
+  timing_scope: string
+}
+
 export function assetUrl(path: string | null | undefined): string | undefined {
   if (!path) return undefined
   if (path.startsWith('http')) return path
@@ -37,6 +52,19 @@ export function uploadVideo(file: File): Promise<BackendVideo> {
   const form = new FormData()
   form.append('file', file)
   return request<BackendVideo>('/videos', { method: 'POST', body: form })
+}
+
+export function inferLiveFrame(
+  file: Blob,
+  frameIndex: number,
+  timestampSeconds: number,
+  signal?: AbortSignal,
+): Promise<LiveFrameResult> {
+  const form = new FormData()
+  form.append('file', file, 'frame.jpg')
+  form.append('frame_index', String(frameIndex))
+  form.append('timestamp_seconds', timestampSeconds.toFixed(6))
+  return request<LiveFrameResult>('/live/frames', { method: 'POST', body: form, signal })
 }
 
 export function startAnalysis(videoId: string, intervalSeconds = 1): Promise<{ task_id: string }> {

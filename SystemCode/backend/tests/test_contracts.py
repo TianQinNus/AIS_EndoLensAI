@@ -1,3 +1,4 @@
+import base64
 import io
 import tempfile
 import time
@@ -186,6 +187,41 @@ class APITests(unittest.TestCase):
         status=self.wait(task)
         self.assertEqual(status["status"],"cancelled")
         self.assertEqual(status["progress"]["processed_frames"],1)
+
+    def test_live_frame_echoes_index_and_returns_aligned_mask(self):
+        self.start()
+        image = Image.fromarray(np.zeros((48, 64, 3), np.uint8))
+        buffer = io.BytesIO()
+        image.save(buffer, "JPEG")
+        payload = buffer.getvalue()
+        response = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "7", "timestamp_seconds": "1.25"},
+        )
+        self.assertEqual(response.status_code, 200, response.text)
+        body = response.json()
+        self.assertEqual(body["frame_index"], 7)
+        self.assertAlmostEqual(body["timestamp_seconds"], 1.25)
+        self.assertEqual((body["width"], body["height"]), (64, 48))
+        self.assertTrue(body["is_candidate"])
+        self.assertGreater(body["inference_time_ms"], 0)
+        self.assertEqual(body["model_version"], MODEL_VERSION)
+        with Image.open(io.BytesIO(base64.b64decode(body["mask_png_base64"]))) as mask:
+            self.assertEqual(mask.size, (64, 48))
+            self.assertEqual(set(np.unique(np.asarray(mask))), {0, 255})
+        rejected = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "-1", "timestamp_seconds": "0"},
+        )
+        self.assertEqual(rejected.status_code, 422)
+        unreadable = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", b"not-an-image", "image/jpeg")},
+            data={"frame_index": "1", "timestamp_seconds": "0"},
+        )
+        self.assertEqual(unreadable.status_code, 422)
 
     def test_page_refresh_and_server_restart_recovery(self):
         self.start();video=self.upload();task=self.task(video["video_id"]);self.wait(task)

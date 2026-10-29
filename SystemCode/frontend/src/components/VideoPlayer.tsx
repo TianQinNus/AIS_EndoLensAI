@@ -38,8 +38,8 @@ export function VideoPlayer({ video, frame, currentTime, onTimeChange }: VideoPl
     Math.abs(frame.timestamp_seconds - currentTime) < 0.05
 
   return (
-    <section className="overflow-hidden rounded-md bg-[#0b1724] p-[9px]">
-      <div className="relative aspect-[1.68] overflow-hidden rounded-md bg-black">
+    <section className="overflow-hidden rounded-md border border-slate-200 bg-white p-[9px] shadow-sm">
+      <div className="relative aspect-[1.68] overflow-hidden rounded-md bg-white">
         <video
           ref={media}
           className={`absolute inset-0 h-full w-full object-contain ${showExactFrame ? 'invisible' : ''}`}
@@ -53,7 +53,7 @@ export function VideoPlayer({ video, frame, currentTime, onTimeChange }: VideoPl
           onEnded={() => setPlaying(false)}
         />
         {showExactFrame && frame && (
-          <div className="absolute inset-0 z-[6] flex items-center justify-center bg-black">
+          <div className="absolute inset-0 z-[6] flex items-center justify-center bg-white">
             <FrameOverlay frame={frame} />
           </div>
         )}
@@ -65,9 +65,9 @@ export function VideoPlayer({ video, frame, currentTime, onTimeChange }: VideoPl
           AI result, not a diagnosis
         </div>
       </div>
-      <div className="flex items-center gap-3.5 px-2 pt-[9px] text-xs text-[#e9f1f8]">
+      <div className="flex items-center gap-3.5 px-2 pt-[9px] text-xs text-[#15243a]">
         <button
-          className="bg-transparent p-0 text-[21px] text-white"
+          className="bg-transparent p-0 text-[21px] text-[#15243a]"
           onClick={() => setPlaying((value) => !value)}
           aria-label={playing ? 'Pause' : 'Play'}
           type="button"

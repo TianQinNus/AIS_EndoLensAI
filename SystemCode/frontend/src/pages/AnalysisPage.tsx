@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { DetectionPanel } from '../components/DetectionPanel'
 import { KeyFrames } from '../components/KeyFrames'
+import { LiveAnalysis } from '../components/LiveAnalysis'
 import { VideoPlayer } from '../components/VideoPlayer'
 import { VideoTimeline } from '../components/VideoTimeline'
 import {
@@ -87,6 +88,7 @@ function AnalysisPage() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [modelName, setModelName] = useState(MODEL_VERSION)
+  const [mode, setMode] = useState<'saved' | 'live'>('saved')
 
   useEffect(() => {
     void getModels()
@@ -156,11 +158,35 @@ function AnalysisPage() {
     !task
       ? ''
       : task.progress.percent == null
-        ? '正在索引帧'
+        ? 'Indexing frames'
         : `${task.status} · ${task.progress.percent.toFixed(0)}%`
 
   return (
     <div>
+      <div className="-mx-2.5 -mt-[9px] mb-2 flex min-h-10 items-end gap-1 bg-[#dee1e6] px-2 pt-1.5" role="tablist" aria-label="Analysis mode">
+        {(
+          [
+            ['saved', 'Saved video'],
+            ['live', 'Live analysis'],
+          ] as const
+        ).map(([id, label]) => {
+          const selected = mode === id
+          return (
+            <button
+              key={id}
+              className={`whitespace-nowrap rounded-t-lg px-4 py-2 text-xs ${selected ? 'bg-slate-50 font-medium text-[#15243a]' : 'text-[#3c4043] hover:bg-[#e8eaed]'}`}
+              aria-selected={selected}
+              onClick={() => setMode(id)}
+              role="tab"
+              type="button"
+            >
+              {label}
+            </button>
+          )
+        })}
+        <span className="mb-2 ml-auto hidden whitespace-nowrap pr-1 text-[11px] text-[#5f6368] sm:block">Model {modelName}. E0 and ensemble are not available.</span>
+      </div>
+      <div className={mode === 'saved' ? undefined : 'hidden'} role="tabpanel">
       <section className="mb-2 flex flex-wrap items-center gap-3 rounded-md border border-slate-200 bg-white p-3 shadow-sm">
         <label className="cursor-pointer rounded bg-[#1677f2] px-3 py-2 text-xs font-medium text-white">
           {busy ? 'Uploading…' : 'Upload video'}
@@ -176,7 +202,6 @@ function AnalysisPage() {
             }}
           />
         </label>
-        <span className="text-xs text-slate-500">Model {modelName}. E0 and ensemble are not available.</span>
         {video && <span className="text-xs text-slate-600">{video.name}</span>}
         {task && (
           <span className="rounded bg-slate-100 px-2 py-1 text-xs text-slate-700">{progress}</span>
@@ -232,6 +257,10 @@ function AnalysisPage() {
           />
         </>
       )}
+      </div>
+      <div className={mode === 'live' ? undefined : 'hidden'} role="tabpanel">
+        <LiveAnalysis />
+      </div>
     </div>
   )
 }
