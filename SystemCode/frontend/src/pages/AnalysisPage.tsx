@@ -5,13 +5,11 @@ import { LiveAnalysis } from '../components/LiveAnalysis'
 import { VideoPlayer } from '../components/VideoPlayer'
 import { VideoTimeline } from '../components/VideoTimeline'
 import {
-  MODEL_VERSION,
   TASK_STORAGE_KEY,
   assetUrl,
   cancelAnalysis,
   followAnalysis,
   getKeyFrames,
-  getModels,
   getReport,
   startAnalysis,
   uploadVideo,
@@ -87,17 +85,7 @@ function AnalysisPage() {
   const [currentTime, setCurrentTime] = useState(0)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
-  const [modelName, setModelName] = useState(MODEL_VERSION)
   const [mode, setMode] = useState<'saved' | 'live'>('saved')
-
-  useEffect(() => {
-    void getModels()
-      .then((page) => {
-        const version = page.items[0]?.model_version
-        if (version) setModelName(version)
-      })
-      .catch(() => setModelName(MODEL_VERSION))
-  }, [])
 
   useEffect(() => {
     const saved = localStorage.getItem(TASK_STORAGE_KEY)
@@ -166,8 +154,8 @@ function AnalysisPage() {
       <div className="-mx-2.5 -mt-[9px] mb-2 flex min-h-10 shrink-0 items-end gap-1 bg-[#dee1e6] px-2 pt-1.5" role="tablist" aria-label="Analysis mode">
         {(
           [
-            ['saved', 'Saved video'],
-            ['live', 'Live analysis'],
+            ['saved', 'Video Analysis'],
+            ['live', 'Live Detection'],
           ] as const
         ).map(([id, label]) => {
           const selected = mode === id
@@ -184,7 +172,6 @@ function AnalysisPage() {
             </button>
           )
         })}
-        <span className="mb-2 ml-auto hidden whitespace-nowrap pr-1 text-[11px] text-[#5f6368] sm:block">Model {modelName}. E0 and ensemble are not available.</span>
       </div>
       <div className={`${mode === 'saved' ? 'flex' : 'hidden'} min-h-0 flex-1 flex-col`} role="tabpanel">
       <section className="mb-2 flex shrink-0 flex-wrap items-center gap-3 rounded-md border border-slate-200 bg-white p-2 shadow-sm">
