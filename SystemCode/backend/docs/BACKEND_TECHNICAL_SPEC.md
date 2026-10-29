@@ -128,7 +128,7 @@ frame_rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
 ### 上传约束
 
 - 仅 `.mp4` 文件、实际 MOV/MP4 容器、H264 视频流、正向、方形像素。
-- 最大 100 MiB、时长 `0 < duration <= 900s`、最多 1080p、最多解码 60,000 帧。
+- 最大 512 MiB、时长 `0 < duration <= 900s`、最多 1080p、最多解码 60,000 帧。上传的 AVI、MOV、M4V、MKV 会先转成 H264 MP4。
 - 必须存在严格递增的 PTS；旋转元数据、缺失 PTS、时间倒退均拒绝。
 - 单次任务最多抽样 600 帧；超过时提示增加 interval 或缩短视频。
 
@@ -306,8 +306,8 @@ POST /api/v1/analyses/{task_id}/exports
 |---|---|
 | 404 | ID、记录或资产不存在 |
 | 409 | 不可复核失败帧，或 revision 冲突 |
-| 413 | 上传超过 100MiB、复核 PNG 超过 16MiB、notes 太长 |
-| 415 | 非 MP4 扩展名 |
+| 413 | 上传超过 512MiB、复核 PNG 超过 16MiB、notes 太长 |
+| 415 | 扩展名不是 `.mp4`、`.mov`、`.m4v`、`.avi`、`.mkv` |
 | 422 | 视频编码/PTS/尺寸不合规，或 JSON/参数/模型版本无效 |
 | 429 | 内存任务队列已满 |
 | 单帧推理异常 | 保存为失败帧，继续任务 |

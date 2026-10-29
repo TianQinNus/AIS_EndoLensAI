@@ -19,11 +19,15 @@ export interface BackendFrame {
   height: number
   status: 'completed' | 'failed'
   is_candidate: boolean | null
+  max_region_area_ratio: number | null
   source_frame_url: string | null
   thumbnail_url: string | null
   mask_url: string | null
   foreground_score: number | null
-  contours: [number, number][][]
+  contours: number[][][]
+  review_status: 'unreviewed' | 'reviewed' | 'rejected'
+  revision_id: string | null
+  edited_mask_url?: string
   error?: string
 }
 
@@ -48,17 +52,24 @@ export interface AnalysisStatus {
     percent: number | null
   }
   error?: string | null
+  performance?: {
+    elapsed_seconds: number
+    processing_fps: number
+  }
 }
 
 export interface BackendReport {
   task_id: string
+  video_id: string
   status: string
+  video?: BackendVideo
   summary: {
     analyzed_frames: number
     candidate_frames: number
     failed_frames: number
     reviewed_frames: number
     candidate_frame_ratio: number | null
+    processing_time_seconds?: number
   }
   warnings: string[]
 }
@@ -68,6 +79,7 @@ export interface VideoMetadata {
   name: string
   duration: number
   fps: number
+  totalFrames: number | null
   streamUrl: string
   demo: boolean
 }
@@ -76,11 +88,16 @@ export interface PolypDetection {
   id: string
   frameIndex: number
   timestamp: number
-  confidence: number
+  confidence: number | null
   contour: Point[]
-  status: 'Candidate Polyp'
+  status: string
+  isCandidate: boolean | null
+  frameStatus: 'completed' | 'failed'
   maskUrl?: string
   sourceUrl?: string
+  thumbnailUrl?: string
+  width: number
+  height: number
 }
 
 export interface KeyFrame {
@@ -88,5 +105,6 @@ export interface KeyFrame {
   timestamp: number
   label: string
   thumbnailUrl?: string
+  isCandidate: boolean | null
   detectionId?: string
 }

@@ -25,11 +25,15 @@ def export(task_id: str, body: ExportInput, request: Request):
     else:
         text = io.StringIO()
         keys = ["frame_id", "frame_index", "timestamp_seconds", "status", "is_candidate", "max_region_area_ratio", "foreground_score"]
-        if body.include_reviewed_masks:
-            keys += ["review_status", "revision_id", "edited_mask_url"]
+
+        def cell(key, value):
+            if key == "timestamp_seconds" and isinstance(value, (int, float)):
+                return f"{value:.2f}"
+            return value
+
         writer = csv.DictWriter(text, fieldnames=keys)
         writer.writeheader()
-        writer.writerows({key: row.get(key) for key in keys} for row in rows)
+        writer.writerows({key: cell(key, row.get(key)) for key in keys} for row in rows)
         data = text.getvalue().encode("utf-8-sig")
     relative = f"exports/{export_id}.{body.format}"
     runtime.store.write(relative, data)

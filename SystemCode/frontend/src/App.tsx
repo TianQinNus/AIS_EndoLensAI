@@ -10,11 +10,11 @@ function App() {
   const [page, setPage] = useState<AppPage>('analysis')
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="h-screen overflow-hidden bg-slate-50">
       <Header />
-      <div className="flex min-h-[calc(100vh-50px)]">
+      <div className="flex h-[calc(100vh-50px)] min-h-0">
         <Sidebar page={page} onNavigate={setPage} />
-        <main className="min-w-0 flex-1 px-2.5 pb-[18px] pt-[9px]">
+        <main className="min-h-0 min-w-0 flex-1 overflow-hidden px-2.5 pb-2.5 pt-[9px]">
           {page === 'analysis' ? <AnalysisPage /> : <ReportsPage />}
         </main>
       </div>

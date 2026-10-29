@@ -1,3 +1,4 @@
+import base64
 import io
 import tempfile
 import time
@@ -38,12 +39,14 @@ class PostprocessingTests(unittest.TestCase):
         self.assertFalse(result.is_candidate);self.assertIsNone(result.foreground_score)
         self.assertEqual(result.max_region_area_ratio,0.)
 
-    def test_area_gate_never_deletes_small_mask(self):
-        p=np.zeros((100,100),np.float32);p[30:32,50:52]=.9
-        result=postprocess(p,min_region_area_ratio=.01)
-        self.assertFalse(result.is_candidate);self.assertEqual(int(result.binary_mask.sum()),4)
-        self.assertAlmostEqual(result.foreground_score,.9,places=6)
+    def test_low_mean_region_is_removed_and_area_gate_is_fixed(self):
+        p=np.zeros((30,40),np.float32);p[3:10,5:12]=.79
+        result=postprocess(p)
+        self.assertFalse(result.is_candidate)
+        self.assertEqual(int(result.binary_mask.sum()),0)
+        self.assertIsNone(result.foreground_score)
         self.assertEqual(result.binary_mask.dtype,np.uint8)
+        with self.assertRaises(ValueError):postprocess(p,min_region_area_ratio=.01)
 
     def test_components_coordinates_holes_and_limits(self):
         p=np.zeros((40,70),np.float32);p[5:20,30:50]=.8;p[8:12,34:38]=0
@@ -116,7 +119,8 @@ class APITests(unittest.TestCase):
         response=self.client.get(video["video_url"],headers={"Range":"bytes=0-7"})
         self.assertEqual(response.status_code,206);self.assertEqual(response.content,self.video.read_bytes()[:8])
         self.assertEqual(self.client.get(video["video_url"],headers={"Range":"bytes=0-1,4-5"}).status_code,416)
-        self.assertEqual(self.client.post("/api/v1/videos",files={"file":("x.avi",b"not-video")}).status_code,415)
+        self.assertEqual(self.client.post("/api/v1/videos",files={"file":("x.avi",b"not-video")}).status_code,422)
+        self.assertEqual(self.client.post("/api/v1/videos",files={"file":("x.txt",b"not-video")}).status_code,415)
         self.assertEqual(self.client.post("/api/v1/videos",files={"file":("x.mp4",b"not-video")}).status_code,422)
         response=self.client.post("/api/v1/analyses",json={"video_id":video["video_id"],"model_version":"polyp-pvt-v1"})
         self.assertEqual(response.status_code,422)
@@ -183,6 +187,98 @@ class APITests(unittest.TestCase):
         status=self.wait(task)
         self.assertEqual(status["status"],"cancelled")
         self.assertEqual(status["progress"]["processed_frames"],1)
+
+    def test_live_frame_echoes_index_and_returns_aligned_mask(self):
+        self.start()
+        image = Image.fromarray(np.zeros((48, 64, 3), np.uint8))
+        buffer = io.BytesIO()
+        image.save(buffer, "JPEG")
+        payload = buffer.getvalue()
+        response = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "7", "timestamp_seconds": "1.25"},
+        )
+        self.assertEqual(response.status_code, 200, response.text)
+        body = response.json()
+        self.assertEqual(body["frame_index"], 7)
+        self.assertAlmostEqual(body["timestamp_seconds"], 1.25)
+        self.assertEqual((body["width"], body["height"]), (64, 48))
+        self.assertTrue(body["is_candidate"])
+        self.assertGreater(body["inference_time_ms"], 0)
+        self.assertEqual(body["model_version"], MODEL_VERSION)
+        with Image.open(io.BytesIO(base64.b64decode(body["mask_png_base64"]))) as mask:
+            self.assertEqual(mask.size, (64, 48))
+            self.assertEqual(set(np.unique(np.asarray(mask))), {0, 255})
+        rejected = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "-1", "timestamp_seconds": "0"},
+        )
+        self.assertEqual(rejected.status_code, 422)
+        unreadable = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", b"not-an-image", "image/jpeg")},
+            data={"frame_index": "1", "timestamp_seconds": "0"},
+        )
+        self.assertEqual(unreadable.status_code, 422)
+
+    def test_live_session_writes_the_recorded_report(self):
+        self.start()
+        video = self.upload()
+        opened = self.client.post("/api/v1/live/sessions", json={"video_id": video["video_id"]})
+        self.assertEqual(opened.status_code, 201, opened.text)
+        task = opened.json()["task_id"]
+        self.assertEqual(self.client.get(f"/api/v1/analyses/{task}").json()["status"], "running")
+        image = Image.fromarray(np.zeros((48, 64, 3), np.uint8))
+        buffer = io.BytesIO()
+        image.save(buffer, "JPEG")
+        payload = buffer.getvalue()
+        for index, timestamp in ((0, 0.0), (3, 1.5)):
+            saved = self.client.post(
+                "/api/v1/live/frames",
+                files={"file": ("frame.jpg", payload, "image/jpeg")},
+                data={"frame_index": str(index), "timestamp_seconds": str(timestamp), "task_id": task},
+            )
+            self.assertEqual(saved.status_code, 200, saved.text)
+        duplicate = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "3", "timestamp_seconds": "1.5", "task_id": task},
+        )
+        self.assertEqual(duplicate.status_code, 200, duplicate.text)
+        self.assertEqual(self.client.get(f"/api/v1/analyses/{task}").json()["status"], "running")
+        finished = self.client.post(f"/api/v1/live/sessions/{task}/finish")
+        self.assertEqual(finished.status_code, 200, finished.text)
+        self.assertEqual(finished.json()["status"], "completed")
+        self.assertEqual(self.client.post(f"/api/v1/live/sessions/{task}/finish").json()["status"], "completed")
+        report = self.client.get(f"/api/v1/analyses/{task}/report").json()
+        self.assertEqual(report["status"], "completed")
+        self.assertEqual(report["video"]["filename"], "demo.mp4")
+        self.assertEqual(report["summary"]["analyzed_frames"], 2)
+        self.assertEqual(report["summary"]["candidate_frames"], 2)
+        self.assertEqual(report["summary"]["failed_frames"], 0)
+        self.assertEqual(report["candidate_timestamps_seconds"], [0.0, 1.5])
+        page = self.client.get(f"/api/v1/analyses/{task}/frames?candidate_only=true").json()
+        self.assertEqual([row["frame_index"] for row in page["items"]], [0, 3])
+        row = page["items"][0]
+        self.assertEqual(self.client.get(row["source_frame_url"]).status_code, 200)
+        self.assertEqual(self.client.get(row["mask_url"]).status_code, 200)
+        exported = self.client.post(f"/api/v1/analyses/{task}/exports", json={"format": "csv", "include_reviewed_masks": False}).json()
+        self.assertEqual(self.client.get(exported["download_url"]).status_code, 200)
+        rejected = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "4", "timestamp_seconds": "2", "task_id": task},
+        )
+        self.assertEqual(rejected.status_code, 409)
+        recorded = self.task(video["video_id"])
+        foreign = self.client.post(
+            "/api/v1/live/frames",
+            files={"file": ("frame.jpg", payload, "image/jpeg")},
+            data={"frame_index": "1", "timestamp_seconds": "0", "task_id": recorded},
+        )
+        self.assertEqual(foreign.status_code, 409)
 
     def test_page_refresh_and_server_restart_recovery(self):
         self.start();video=self.upload();task=self.task(video["video_id"]);self.wait(task)

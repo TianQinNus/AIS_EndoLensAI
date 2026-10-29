@@ -1,0 +1,62 @@
+{
+  "status": "COMPLETED",
+  "run_kind": "FULL_E0",
+  "started_at": "2026-10-04T14:13:45.872517+00:00",
+  "project": "<PROJECT_ROOT>",
+  "python": "3.10.21 | packaged by conda-forge | (main, Aug 21 2026, 22:37:53) [Clang 19.1.7 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "logical_cpu_count": 10,
+  "arguments": {
+    "project": null,
+    "output": null,
+    "device": "cpu",
+    "threads": 4,
+    "warmup": 3,
+    "audit_only": false,
+    "smoke": false,
+    "skip_legacy": false
+  },
+  "protocol": {
+    "id": "endolens-e0-probability-v1",
+    "input": "RGB; Pillow bilinear resize 352x352; float32 /255; ImageNet normalization",
+    "output": "sigmoid(bilinear_resize(P1_logits + P2_logits, original H,W, align_corners=False))",
+    "probability_storage": "compressed NPZ, key probability, float32, original HxW, no per-image minmax",
+    "binary_prediction": "probability >= 0.5; saved uint8 mask uses 0/255",
+    "ground_truth": "8-bit grayscale: {0,1} encoded masks use >0; otherwise >127.5",
+    "metrics": "per-image binary Dice and IoU, arithmetic mean within each group",
+    "empty_masks": "GT and prediction both empty => Dice=IoU=1; exactly one empty => 0",
+    "overall": "image-weighted mean across all samples, NOT equal-weight mean of dataset means",
+    "legacy": "per-image minmax eps=1e-8, round to uint8, /255, threshold 0.5; both empty => 0 (old script convention)"
+  },
+  "script_sha256": "6175a919a3fed0d5e6e70d4b882a58e0f784f00e19d637070c529d5fd6bd8c65",
+  "processed_count": 798,
+  "manifest_sha256": "ed9e510313ffee1ec8af5b8e6be90acddbc7f6f603d96b204a6eb2579da74b25",
+  "device": "cpu",
+  "torch_cpu_threads": 4,
+  "batch_size": 1,
+  "input_size": 352,
+  "precision": "float32",
+  "threshold": 0.5,
+  "checkpoint": "<PROJECT_ROOT>/model_pth/PolypPVT.pth",
+  "checkpoint_sha256": "aef5ac34f7795b85af0ecbb730502db251d416a73a4c6b04a74e30aa45554048",
+  "backbone_sha256": "80711cd1b37ffba12bec6c7a2a7c54efe2315ed635e6d2055fd51c3e909ede4d",
+  "source_hashes": {
+    "lib/pvt.py": "aa34ef3da7dcad9db95f757a3326e2b6b8839a14f7aadb34fab555bda4f0d1d9",
+    "lib/pvtv2.py": "bad9a96bca9841679b5f7a5a97bf9bbc4239611fb4be6d0ba0783f64e4f9dc8c"
+  },
+  "versions": {
+    "torch": "2.2.2",
+    "torchvision": "0.17.2",
+    "timm": "0.4.12",
+    "numpy": "1.26.4",
+    "Pillow": "10.2.0"
+  },
+  "expected_processed_count": 798,
+  "include_legacy": true,
+  "mps_fallback": "unset",
+  "timing": "forward only, batch=1, synchronization before/after; excludes preprocess, resize/sigmoid, metrics and files",
+  "analysis_loop_seconds": 226.30329500000062,
+  "analysis_loop_timing": "all selected images: decode, preprocess, transfer, inference, metrics and result writing; excludes audit, model loading and warmup",
+  "finished_at": "2026-10-04T14:17:55.301759+00:00"
+}

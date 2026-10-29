@@ -1,0 +1,94 @@
+{
+  "status": "COMPLETED",
+  "expected_count": 798,
+  "checkpoint_sha256": "ed5222bfddf285e9f15421f25fc9db0f1624424c9d4db0338cf98f89fb7c3937",
+  "protocol": {
+    "id": "endolens-e2-probability-v1",
+    "input": "RGB, Pillow bilinear resize, /255, ImageNet mean/std",
+    "output": "sigmoid(bilinear_resize(logits, original H,W, align_corners=False))",
+    "threshold": 0.5,
+    "per_image_minmax": false,
+    "aggregation": "arithmetic mean of per-image binary Dice/IoU; ALL weighted by entry count",
+    "empty_masks": "both empty =>1, exactly one empty =>0",
+    "training_loss": "FP32 BCEWithLogits + per-image soft Dice, smooth=1"
+  },
+  "environment": {
+    "python": "3.11.17 | packaged by Anaconda, Inc. | (main, Oct  1 2026, 20:16:54) [MSC v.1942 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "device": "cuda:0",
+    "python_executable": "<USER_HOME>\\.conda\\envs\\endolens-e2-win\\python.exe",
+    "torch": "2.9.1+cu128",
+    "cuda_build": "12.8",
+    "versions": {
+      "torch": "2.9.1+cu128",
+      "torchvision": "0.24.1+cu128",
+      "numpy": "1.26.4",
+      "Pillow": "10.2.0"
+    },
+    "cpu_threads": 4,
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_total_bytes": 8546484224,
+    "gpu_capability": [
+      12,
+      0
+    ],
+    "cuda_arch_list": [
+      "sm_70",
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120"
+    ],
+    "cudnn": 91002,
+    "nvidia_smi": "NVIDIA GeForce RTX 5060 Laptop GPU, 592.01, 8151 MiB"
+  },
+  "batch_size": 1,
+  "warmup": 3,
+  "training_environment": {
+    "python": "3.11.17 | packaged by Anaconda, Inc. | (main, Oct  1 2026, 20:16:54) [MSC v.1942 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "device": "cuda:0",
+    "python_executable": "<USER_HOME>\\.conda\\envs\\endolens-e2-win\\python.exe",
+    "torch": "2.9.1+cu128",
+    "cuda_build": "12.8",
+    "versions": {
+      "torch": "2.9.1+cu128",
+      "torchvision": "0.24.1+cu128",
+      "numpy": "1.26.4",
+      "Pillow": "10.2.0"
+    },
+    "cpu_threads": 4,
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_total_bytes": 8546484224,
+    "gpu_capability": [
+      12,
+      0
+    ],
+    "cuda_arch_list": [
+      "sm_70",
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120"
+    ],
+    "cudnn": 91002,
+    "nvidia_smi": "NVIDIA GeForce RTX 5060 Laptop GPU, 592.01, 8151 MiB"
+  },
+  "bundle_signature": "4db3da9a564f2ee728ec69b7157ad7a39d0533e3f22c1242d656ca2008b8c455",
+  "timing": "FP32 forward synchronized, excludes pre/postprocessing, metrics and file writes",
+  "processed_count": 798,
+  "summary": {
+    "count": 798,
+    "mean_dice": 0.7609103104002443,
+    "mean_iou": 0.6903107287842937,
+    "mean_mae": 0.045028419709731746,
+    "analysis_loop_seconds": 88.94187520002015,
+    "empty_prediction_count": 0,
+    "zero_dice_count": 19
+  },
+  "analysis_loop_timing": "decode, preprocess, forward, postprocess, metrics and writes; excludes model load/audit/warmup"
+}

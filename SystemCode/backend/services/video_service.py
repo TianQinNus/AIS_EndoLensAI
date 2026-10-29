@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ..video import decoded, probe, schedule
+from ..video import convert_to_h264_mp4, decoded, probe, schedule
 
 
 class VideoService:
@@ -9,6 +9,7 @@ class VideoService:
     probe = staticmethod(probe)
     decoded = staticmethod(decoded)
     schedule = staticmethod(schedule)
+    convert = staticmethod(convert_to_h264_mp4)
 
     @staticmethod
     def filename(value: str | None) -> str:

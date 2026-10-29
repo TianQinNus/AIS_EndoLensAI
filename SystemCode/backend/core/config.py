@@ -3,11 +3,12 @@ import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-MAX_UPLOAD = 100 * 1024**2
+# File size is not the processing-time limit. Duration (15 min) and the
+# 600-frame sample cap bound inference. 512MiB fits the current local clips.
+MAX_UPLOAD = 512 * 1024**2
 WARNINGS = [
     "RESEARCH_DEMO_NOT_CLINICAL",
-    "POSITIVE_ONLY_MODEL:NO_NEGATIVE_FRAME_SPECIFICITY_CLAIM",
-    "AREA_GATE_UNVALIDATED_ENGINEERING_RULE",
+    "POSTPROCESSING_SELECTED_ON_REUSED_C6_EXPLORATORY",
     "CANDIDATE_COUNT_IS_FRAMES_NOT_DISTINCT_POLYPS",
     "FOREGROUND_SCORE_NOT_CALIBRATED_CLINICAL_PROBABILITY",
 ]
@@ -15,8 +16,11 @@ WARNINGS = [
 
 def area_gate() -> float:
     value = float(os.getenv("ENDO_MIN_REGION_AREA_RATIO", "0"))
-    if not math.isfinite(value) or not 0 <= value <= 1:
-        raise ValueError("Invalid ENDO_MIN_REGION_AREA_RATIO")
+    if not math.isfinite(value) or value != 0:
+        raise ValueError(
+            "Remove nonzero ENDO_MIN_REGION_AREA_RATIO: this release uses "
+            "confidence filtering only, with no area gate"
+        )
     return value
 
 
