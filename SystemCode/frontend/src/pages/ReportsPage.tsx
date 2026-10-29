@@ -168,8 +168,10 @@ function CandidateFrame({
       .catch((reason: Error) => onError(reason.message))
   }
 
+  const ratio = frame.width > 0 && frame.height > 0 ? `${frame.width} / ${frame.height}` : '4 / 3'
+
   return (
-    <figure ref={card} className="m-0 overflow-hidden rounded-md border border-slate-200">
+    <figure ref={card} className="m-0 min-w-0 self-start overflow-hidden rounded-md border border-slate-200 bg-white">
       <figcaption className="flex items-center justify-between gap-2 border-b border-slate-200 bg-slate-50 px-3 py-2">
         <span className="text-sm font-semibold text-[#112a47]">{label}</span>
         <button
@@ -181,11 +183,13 @@ function CandidateFrame({
           Download
         </button>
       </figcaption>
-      <canvas
-        ref={canvas}
-        aria-label={`${label} with model mask`}
-        className="block h-auto w-full bg-black"
-      />
+      <div className="relative w-full bg-black" style={{ aspectRatio: ratio }}>
+        <canvas
+          ref={canvas}
+          aria-label={`${label} with model mask`}
+          className="absolute inset-0 h-full w-full"
+        />
+      </div>
     </figure>
   )
 }
@@ -264,7 +268,7 @@ function ReportsPage() {
             <ReportCard label="Reviewed frames" value={String(report.summary.reviewed_frames)} />
           </div>
           <section className="mb-2 shrink-0 rounded-md border border-slate-200 bg-white p-3 text-sm text-slate-600 shadow-sm">
-            <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-3">
               <div>
                 Status: {report.status}. Task {report.task_id}.
               </div>
@@ -276,21 +280,16 @@ function ReportsPage() {
                 Export CSV
               </button>
             </div>
-            {error && <p className="mb-2 text-xs text-red-600">{error}</p>}
-            <ul className="list-disc pl-5 text-xs text-slate-500">
-              {report.warnings.map((warning) => (
-                <li key={warning}>{warning}</li>
-              ))}
-            </ul>
+            {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
           </section>
-          <section className="min-h-0 flex-1 overflow-hidden rounded-md border border-slate-200 bg-white p-3 shadow-sm">
+          <section className="min-h-0 flex-1 overflow-y-auto rounded-md border border-slate-200 bg-white p-3 shadow-sm">
             <h2 className="mb-3 text-sm font-bold text-[#27384f]">
               Candidate frames ({frames.length})
             </h2>
             {frames.length === 0 ? (
               <p className="text-sm text-slate-500">No analyzed frame in this video was marked as a candidate.</p>
             ) : (
-              <div className="grid h-full min-h-0 content-start gap-3 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid content-start items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {frames.map((frame, index) => (
                   <CandidateFrame
                     frame={frame}
