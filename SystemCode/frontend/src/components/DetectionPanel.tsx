@@ -20,7 +20,7 @@ export function DetectionPanel({
   const selected = detections.find((item) => item.id === selectedId) ?? detections[0]
   const fpsLabel = processingFps == null || processingFps === 0 ? '—' : processingFps.toFixed(1)
   return (
-    <section className="min-w-0 rounded-md border border-slate-200 bg-white p-[13px] shadow-sm">
+    <section className="min-h-0 min-w-0 rounded-md border border-slate-200 bg-white p-[13px] shadow-sm lg:overflow-hidden">
       <div className="mb-3 -mx-[13px] flex h-[43px] items-center border-b border-[#e3eaf2] px-[13px]">
         <span className="flex h-full items-center border-b-2 border-[#1677f2] text-xs font-bold text-[#1677f2]">
           Sampled frames

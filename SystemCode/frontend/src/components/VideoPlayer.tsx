@@ -38,8 +38,8 @@ export function VideoPlayer({ video, frame, currentTime, onTimeChange }: VideoPl
     Math.abs(frame.timestamp_seconds - currentTime) < 0.05
 
   return (
-    <section className="overflow-hidden rounded-md border border-slate-200 bg-white p-[9px] shadow-sm">
-      <div className="relative aspect-[1.68] overflow-hidden rounded-md bg-white">
+    <section className="overflow-hidden rounded-md border border-slate-200 bg-white p-[9px] shadow-sm lg:flex lg:min-h-0 lg:flex-col">
+      <div className="relative aspect-[1.68] overflow-hidden rounded-md bg-white lg:min-h-0 lg:flex-1 lg:aspect-auto">
         <video
           ref={media}
           className={`absolute inset-0 h-full w-full object-contain ${showExactFrame ? 'invisible' : ''}`}
