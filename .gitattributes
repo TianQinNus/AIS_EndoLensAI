@@ -1,8 +1,0 @@
-# Frozen experiment checks hash file bytes. Disable newline conversion here.
-*.py -text
-*.json -text
-*.csv -text
-*.md text eol=lf
-*.cmd text eol=crlf
-*.docx binary
-*.pdf binary
