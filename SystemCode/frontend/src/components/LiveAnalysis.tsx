@@ -485,7 +485,7 @@ export function LiveAnalysis() {
   const lag = current ? playbackTime - current.timestamp : 0
 
   return (
-    <div>
+    <div className="flex h-full min-h-0 flex-col overflow-hidden">
       <section className="mb-2 flex flex-wrap items-center gap-3 rounded-md border border-slate-200 bg-white p-3 shadow-sm">
         <label className="cursor-pointer rounded bg-[#1677f2] px-3 py-2 text-xs font-medium text-white">
           Upload video
@@ -514,7 +514,7 @@ export function LiveAnalysis() {
         {reportNote && <span className="text-xs text-[#1677f2]">{reportNote}</span>}
         {error && <span className="text-xs text-red-600">{error}</span>}
       </section>
-      <p className="mb-2 rounded-md border border-[#d7e6f8] bg-[#f4f8fd] px-3 py-2 text-xs leading-5 text-[#3d5168]">
+      <p className="mb-2 shrink-0 rounded-md border border-[#d7e6f8] bg-[#f4f8fd] px-3 py-2 text-xs leading-5 text-[#3d5168]">
         Every recording is converted to MP4 before playback. It then plays at its original speed,
         and each request sends one frame together with its frame number and timestamp. Frames
         presented while a request is in flight are skipped, and the next request sends the newest
@@ -528,7 +528,7 @@ export function LiveAnalysis() {
         </div>
       ) : (
         <>
-          <div className="grid gap-[9px] lg:grid-cols-2">
+          <div className="grid min-h-0 flex-1 gap-[9px] lg:grid-cols-2">
             <section className="overflow-hidden rounded-md border border-slate-200 bg-white p-[9px] shadow-sm">
               <div className="mb-2 text-[11px] font-medium text-[#526277]">Playback</div>
               <div className="relative aspect-[1.68] overflow-hidden rounded-md bg-white">

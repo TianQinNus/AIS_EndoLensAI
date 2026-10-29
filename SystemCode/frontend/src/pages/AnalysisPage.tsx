@@ -162,8 +162,8 @@ function AnalysisPage() {
         : `${task.status} · ${task.progress.percent.toFixed(0)}%`
 
   return (
-    <div>
-      <div className="-mx-2.5 -mt-[9px] mb-2 flex min-h-10 items-end gap-1 bg-[#dee1e6] px-2 pt-1.5" role="tablist" aria-label="Analysis mode">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="-mx-2.5 -mt-[9px] mb-2 flex min-h-10 shrink-0 items-end gap-1 bg-[#dee1e6] px-2 pt-1.5" role="tablist" aria-label="Analysis mode">
         {(
           [
             ['saved', 'Saved video'],
@@ -186,8 +186,8 @@ function AnalysisPage() {
         })}
         <span className="mb-2 ml-auto hidden whitespace-nowrap pr-1 text-[11px] text-[#5f6368] sm:block">Model {modelName}. E0 and ensemble are not available.</span>
       </div>
-      <div className={mode === 'saved' ? undefined : 'hidden'} role="tabpanel">
-      <section className="mb-2 flex flex-wrap items-center gap-3 rounded-md border border-slate-200 bg-white p-3 shadow-sm">
+      <div className={`${mode === 'saved' ? 'flex' : 'hidden'} min-h-0 flex-1 flex-col`} role="tabpanel">
+      <section className="mb-2 flex shrink-0 flex-wrap items-center gap-3 rounded-md border border-slate-200 bg-white p-2 shadow-sm">
         <label className="cursor-pointer rounded bg-[#1677f2] px-3 py-2 text-xs font-medium text-white">
           {busy ? 'Uploading…' : 'Upload video'}
           <input
@@ -223,7 +223,7 @@ function AnalysisPage() {
         </div>
       ) : (
         <>
-          <div className="grid gap-[9px] lg:grid-cols-[minmax(450px,2fr)_minmax(330px,1fr)]">
+          <div className="grid min-h-0 flex-1 gap-[9px] lg:grid-cols-[minmax(450px,2fr)_minmax(330px,1fr)]">
             <VideoPlayer
               video={video}
               frame={selected}
@@ -258,7 +258,7 @@ function AnalysisPage() {
         </>
       )}
       </div>
-      <div className={mode === 'live' ? undefined : 'hidden'} role="tabpanel">
+      <div className={`${mode === 'live' ? 'flex' : 'hidden'} min-h-0 flex-1 flex-col overflow-hidden`} role="tabpanel">
         <LiveAnalysis />
       </div>
     </div>

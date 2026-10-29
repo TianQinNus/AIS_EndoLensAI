@@ -232,16 +232,16 @@ function ReportsPage() {
   const filename = report?.video?.filename
 
   return (
-    <div className="mx-auto max-w-[1100px]">
+    <div className="mx-auto flex h-full min-h-0 max-w-[1100px] flex-col">
       {filename && (
-        <section className="mb-3 flex items-center gap-3 rounded-md border border-[#c5d4e8] bg-white px-4 py-3 shadow-sm">
+        <section className="mb-2 flex shrink-0 items-center gap-3 rounded-md border border-[#c5d4e8] bg-white px-3 py-2 shadow-sm">
           <span className="text-[11px] font-semibold uppercase tracking-wide text-[#66758a]">Video file</span>
           <span className="min-w-0 truncate text-base font-semibold text-[#112a47]" title={filename}>
             {filename}
           </span>
         </section>
       )}
-      <section className="mb-2 rounded-lg bg-gradient-to-r from-[#112a47] to-[#1d5f9b] p-5 text-white">
+      <section className="mb-2 shrink-0 rounded-lg bg-gradient-to-r from-[#112a47] to-[#1d5f9b] p-3 text-white">
         <h1 className="mb-1 text-[22px]">Analysis Reports</h1>
         <p className="text-xs text-[#c8e0f9]">
           Frames judged to contain a mask are shown below. Each image is named by its time in the video.
@@ -257,13 +257,13 @@ function ReportsPage() {
         </section>
       ) : (
         <>
-          <div className="mb-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mb-2 grid shrink-0 gap-2 sm:grid-cols-2 lg:grid-cols-4">
             <ReportCard label="Analyzed frames" value={String(report.summary.analyzed_frames)} />
             <ReportCard label="Candidate frames" value={String(report.summary.candidate_frames)} />
             <ReportCard label="Failed frames" value={String(report.summary.failed_frames)} />
             <ReportCard label="Reviewed frames" value={String(report.summary.reviewed_frames)} />
           </div>
-          <section className="mb-3 rounded-md border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
+          <section className="mb-2 shrink-0 rounded-md border border-slate-200 bg-white p-3 text-sm text-slate-600 shadow-sm">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
                 Status: {report.status}. Task {report.task_id}.
@@ -283,14 +283,14 @@ function ReportsPage() {
               ))}
             </ul>
           </section>
-          <section className="rounded-md border border-slate-200 bg-white p-4 shadow-sm">
+          <section className="min-h-0 flex-1 overflow-hidden rounded-md border border-slate-200 bg-white p-3 shadow-sm">
             <h2 className="mb-3 text-sm font-bold text-[#27384f]">
               Candidate frames ({frames.length})
             </h2>
             {frames.length === 0 ? (
               <p className="text-sm text-slate-500">No analyzed frame in this video was marked as a candidate.</p>
             ) : (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid h-full min-h-0 content-start gap-3 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
                 {frames.map((frame, index) => (
                   <CandidateFrame
                     frame={frame}
