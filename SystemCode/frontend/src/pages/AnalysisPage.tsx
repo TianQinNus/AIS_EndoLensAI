@@ -206,7 +206,7 @@ function AnalysisPage() {
       </section>
       {!video ? (
         <div className="rounded-md border border-dashed border-slate-300 bg-white p-12 text-center text-sm text-slate-500">
-          Upload a recorded video up to 512MB. AVI, MOV, and MKV are converted to H264 MP4. This page analyzes saved video, not a live endoscope feed.
+          Upload a video up to 512MB. Supported formats: MP4, MOV, M4V, AVI, and MKV.
         </div>
       ) : (
         <>
