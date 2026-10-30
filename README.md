@@ -1,36 +1,22 @@
-# EndoLens AI
+<div align="center">
 
-**AI-Assisted Polyp Segmentation and Interactive Colonoscopy Video Analysis**
+<h1>EndoLens AI</h1>
+<p><strong>AI-Assisted Polyp Segmentation<br>and Interactive Colonoscopy Video Analysis</strong></p>
 
-| Project information | Details |
-|---|---|
-| Course | Practice Module (ISY5002) |
-| Project name | EndoLens AI |
-| Group | Practice Project Group (FT) 8 |
-| Institution | National University of Singapore — Institute of Systems Science (NUS-ISS) |
+<p>National University of Singapore<br>Institute of Systems Science (NUS-ISS)</p>
+<p>Practice Module (ISY5002) · Practice Project Group (FT) 8</p>
 
-### Project Team
+<p><strong>Project Team</strong><br>
+Zhang Tianqin · A0356380B<br>
+Zhang Yuyue · A0305487X<br>
+Ma Jialing · A0305478X<br>
+Gong Yucheng · A0355325E</p>
 
-| Official full name | Student ID |
-|---|---|
-| Zhang Tianqin | A0356380B |
-| Zhang Yuyue | A0305487X |
-| Ma Jialing | A0305478X |
-| Gong Yucheng | A0355325E |
+</div>
 
-## Contents
+---
 
-1. [Project Title and Features](#section-1-project-title-and-features)
-2. [Executive Summary and System Architecture](#section-2-executive-summary-and-system-architecture)
-3. [System Demonstration Videos](#section-3-system-demonstration-videos)
-4. [User Guide — Installation and Startup](#section-4-user-guide--installation-and-startup)
-5. [Repository Structure](#section-5-repository-structure)
-6. [Data and Model Assets](#section-6-data-and-model-assets)
-7. [Attribution and Usage Terms](#section-7-attribution-and-usage-terms)
-
-## Section 1: Project Title and Features
-
-### EndoLens AI — Polyp Segmentation and Colonoscopy Video Analysis System
+## Section 1: Project Overview
 
 EndoLens AI connects AI-based polyp segmentation with video processing, visual inspection, and saved analysis reports. The project is motivated by missed polyps during colonoscopy and focuses on presenting predicted regions clearly within their original video context.
 
@@ -98,16 +84,11 @@ FastAPI backend — one Uvicorn worker
 
 The current application uses a single segmentation network with test-time augmentation. Fusion implementations in the model archive are not the deployed web inference pipeline. The application supports visual review; it does not establish clinical miss-rate reduction or validated real-time endoscopy performance.
 
-## Section 3: System Demonstration Videos
+## Section 3: Presentation Video
 
-The project demonstration can be organized into two complementary walkthroughs:
+The EndoLens AI presentation video covers the project background, system architecture, segmentation model, software implementation, and application demonstration. The demonstration shows recorded-video review, timestamped mask inspection, candidate navigation, Reports, and Simulated-Live Analysis.
 
-| Video | Coverage | Link |
-|---|---|---|
-| Product demonstration | Recorded-video analysis, candidate navigation, timestamped mask inspection, Reports, image downloads, CSV export, and Live Detection | To be added |
-| Technical system walkthrough | Frontend/backend architecture, the shared inference pipeline, task processing, persistence, and runtime measurements | To be added |
-
-Video links have not yet been added to this README. Project video assets belong in [`Video/`](Video/); raw colonoscopy recordings and model weights should be transferred separately rather than committed to Git.
+**Presentation video:** Link to be added.
 
 ## Section 4: User Guide — Installation and Startup
 
@@ -324,17 +305,3 @@ AIS_EndoLensAI/
 ```
 
 Older progress reports and model-directory instructions document earlier checkpoints. For the current web application, use the startup steps above and the release configuration in [`backend/model.json`](SystemCode/backend/model.json).
-
-## Section 6: Data and Model Assets
-
-The initial public dataset collection follows the training and test membership distributed through the [official Polyp-PVT repository](https://github.com/DengPingFan/Polyp-PVT#42-data-preparation). It includes Kvasir-SEG, CVC-ClinicDB, CVC-ColonDB, ETIS-LaribPolypDB, and CVC-300. Additional project data include FAR-POLYP-SEG and multi-centre PolypGen material.
-
-The web application does not require these training datasets. It requires the current checkpoint described in Section 4.4 and a video to analyze. A synthetic video is provided for checking uploads and application behavior; it cannot establish polyp-detection accuracy.
-
-Dataset images, labels, training checkpoints, and complete prediction archives are not bundled in Git. Obtain them from authorized sources or the team asset transfer. Keep clinical uploads, runtime storage, credentials, and local environment files out of commits. See [`.gitignore`](.gitignore) and [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
-## Section 7: Attribution and Usage Terms
-
-EndoLens AI integrates established segmentation architectures and software libraries. U-Net, ResNet, and Polyp-PVT retain their original attribution; this project does not claim to have invented these architectures.
-
-Read [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for source attribution and usage terms. The upstream Polyp-PVT code is restricted to research and education unless formal commercial permission is obtained. Dataset, dependency, and checkpoint terms apply separately. This repository does not grant an umbrella MIT or Apache license.
