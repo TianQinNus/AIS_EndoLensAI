@@ -114,7 +114,7 @@ function AnalyzedView({ frame, maxWidth }: { frame: AnalyzedFrame; maxWidth?: nu
     <canvas
       ref={canvas}
       aria-label={`Analyzed frame ${frame.frameIndex} with its own mask`}
-      className="block h-auto max-h-full w-full object-contain"
+      className="block h-full w-full object-contain"
     />
   )
 }
@@ -515,11 +515,9 @@ export function LiveAnalysis() {
         {error && <span className="text-xs text-red-600">{error}</span>}
       </section>
       {!source ? (
-        preparing ? (
-          <div className="rounded-md border border-dashed border-slate-300 bg-white p-12 text-center text-sm text-slate-500">
-            {preparing}
-          </div>
-        ) : null
+        <div className="rounded-md border border-dashed border-slate-300 bg-white p-12 text-center text-sm text-slate-500">
+          {preparing || 'Upload a video up to 512MB. Supported formats: MP4, MOV, M4V, AVI, and MKV.'}
+        </div>
       ) : (
         <>
           <div className="grid min-h-0 flex-1 gap-[9px] lg:grid-cols-2">

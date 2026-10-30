@@ -62,14 +62,14 @@ export function FrameOverlay({ frame }: { frame: FrameResult }) {
   ])
 
   return (
-    <figure className="m-0">
+    <figure className="m-0 h-full w-full">
       <figcaption className="sr-only">
         {frame.edited_mask_url ? 'Human-reviewed mask' : 'Original AI mask'}
       </figcaption>
       <canvas
         ref={canvas}
         aria-label="Saved frame with segmentation overlay"
-        className="block h-auto max-h-full w-full object-contain"
+        className="block h-full w-full object-contain"
       />
     </figure>
   )
