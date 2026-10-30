@@ -1,7 +1,7 @@
 <div align="center">
 
 <h1>EndoLens AI</h1>
-<p><strong>Polyp Segmentation and Colonoscopy Video AnalysisAnalysis</strong></p>
+<p><strong>Polyp Segmentation and Colonoscopy Video Analysis</strong></p>
 
 <p>National University of Singapore<br>Institute of Systems Science (NUS-ISS)</p>
 <p>Practice Module (ISY5002) · Practice Project Group (FT) 8</p>
