@@ -1,1 +1,1 @@
-"""Local integration starter, not a production clinical backend."""
+"""EndoLens AI backend for recorded-video and simulated-live analysis."""

@@ -188,7 +188,7 @@ def create_app(storage_dir=None, adapter=None, device=None):
                 app.state.runtime.close()
             store.close()
 
-    app = FastAPI(title="EndoLens B integration starter", version="1.0.0", lifespan=lifespan)
+    app = FastAPI(title="EndoLens AI", version="1.0.0", lifespan=lifespan)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=cors_origins(),
