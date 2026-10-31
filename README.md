@@ -251,7 +251,7 @@ In a third terminal (in PowerShell, type `curl.exe`, not `curl`):
 cd "C:\path\to\AIS_EndoLensAI\SystemCode"
 curl.exe --fail-with-body http://127.0.0.1:8000/api/v1/health
 curl.exe --fail-with-body http://127.0.0.1:8000/api/v1/models
-curl.exe --fail-with-body -F "file=@backend/examples/example_video.avi" http://127.0.0.1:8000/api/v1/videos
+curl.exe --fail-with-body -F "file=@backend/examples/synthetic_demo.mp4" http://127.0.0.1:8000/api/v1/videos
 ```
 
 Expected:
