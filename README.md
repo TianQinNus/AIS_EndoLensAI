@@ -162,6 +162,7 @@ Expected: `No broken requirements found.`, and `CUDA: True` on GPU machines. The
 The weight is excluded by `.gitignore`. Download both parts from the links in Step 4.1 into the same local folder. From the repository root, run:
 
 ```powershell
+cd "$env:ENDOLENS_ROOT"
 python SystemCode/model/endolens_e13/install_weights.py --parts-dir "$HOME/Downloads"
 ```
 
@@ -346,7 +347,7 @@ Filtering removes predictions from 173 additional negative frames, reducing FPR 
 
 The final rule uses native 8-connected components, pixel threshold 0.5 and component mean >=0.8. It has no minimum-area filter, temporal confirmation or additional model. Raw probability maps are diagnostic: display and candidate status must use the filtered mask. Scores are not calibrated disease probabilities. Upgrading weights does not recompute existing stored tasks.
 
-The [final model record](SystemCode/model/docs/FINAL_MODEL_RELEASE.md) contains the training recipe, data accounting, selection criteria and timing boundary. [Compact evaluation CSVs](Miscellaneous/model_results/2026-10-31/README.md) preserve full precision. Controlled full-SDK timing on the RTX 5060 Laptop GPU was 114.75 ms mean and 136.76 ms p95, excluding video decoding, HTTP, queues, persistence and browser display. These values are not application FPS.
+The [final model record](SystemCode/model/docs/FINAL_MODEL_RELEASE.md) contains the training recipe, data accounting, selection criteria and timing boundary. Controlled full-SDK timing on the RTX 5060 Laptop GPU was 114.75 ms mean and 136.76 ms p95, excluding video decoding, HTTP, queues, persistence and browser display. These values are not application FPS.
 
 ### Standalone SDK verification
 

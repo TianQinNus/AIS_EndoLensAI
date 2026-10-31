@@ -6,6 +6,7 @@
 /SystemCode/model/e2_weights/
 /SystemCode/model/result_map/
 /SystemCode/runtime_data/
+/SystemCode/backend/runtime_data/
 
 # Large model / probability artifacts anywhere
 *.pth
