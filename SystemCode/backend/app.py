@@ -24,7 +24,7 @@ from .core.config import (
     device as configured_device,
     storage_dir as configured_storage_dir,
 )
-from .endolens_model import ModelAdapter
+from .endolens_model import POSTPROCESS_VERSION, ModelAdapter
 from .services.inference_service import InferenceService, image_bytes
 from .services.video_service import VideoService
 from .storage import Store
@@ -135,7 +135,10 @@ class Runtime:
                     component_count=post.component_count,
                     display_geometry_truncated=post.display_geometry_truncated,
                     foreground_score=post.foreground_score,
-                    score_type="mean_foreground_score_of_largest_component",
+                    score_type="mean_foreground_score_of_largest_retained_component",
+                    raw_component_count=post.raw_component_count,
+                    removed_component_count=post.removed_component_count,
+                    postprocessing_version=POSTPROCESS_VERSION,
                     segmented_area_ratio=post.segmented_area_ratio,
                     inference_time_ms=result.inference_time_ms,
                     device=result.device,

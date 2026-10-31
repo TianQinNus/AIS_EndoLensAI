@@ -1,0 +1,4 @@
+EndoLens AI - Final Project Presentation
+https://youtu.be/qXlUmzXPsoE
+
+The presentation covers model development, evaluation, system architecture, and the application demonstration.

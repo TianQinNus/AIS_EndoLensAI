@@ -21,11 +21,10 @@ class InferenceService:
 
     def predict(self, frame_rgb: np.ndarray, model_version: str):
         result = self.adapter.predict(frame_rgb, model_version)
-        return result, postprocess(
-            result.probability_map,
-            segmentation_threshold=0.5,
-            min_region_area_ratio=self.area_gate,
-        )
+        filtered = getattr(result, "postprocess_result", None)
+        if filtered is None:
+            filtered = postprocess(result.probability_map)
+        return result, filtered
 
     @staticmethod
     def source_image(frame_rgb: np.ndarray) -> Image.Image:
