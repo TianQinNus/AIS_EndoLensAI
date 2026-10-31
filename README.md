@@ -33,7 +33,7 @@ The application supports two complementary workflows: **Recorded-Video Analysis*
 - **Runtime feedback:** display processing progress and analysis rate, with model time, round-trip time, and skipped-frame counts in Live Detection.
 - **Task management:** cancel recorded analyses and retain results already completed when processing is interrupted.
 
-A candidate is a frame with a nonempty filtered prediction. Candidate-frame counts describe observations, not distinct polyps. The recorded-video player supports original-video playback and exact saved-frame overlays; the current interface does not export a separately encoded annotated video.
+A candidate is a frame with a nonempty filtered prediction. Candidate-frame counts describe observations, not distinct polyps.
 
 ## Section 2: Executive Summary and System Architecture
 
@@ -43,7 +43,7 @@ In Recorded-Video Analysis, the backend accepts an uploaded recording, prepares 
 
 In Simulated-Live Analysis, the browser captures individual frames during playback and sends them to a single-frame inference endpoint. Only one browser request remains in flight at a time; new capture opportunities are skipped while the previous request is pending. Returned predictions are displayed incrementally, and frames associated with a live session are saved for the shared reporting workflow. This mode currently uses a pre-recorded input rather than a directly connected endoscope.
 
-Both workflows use the same **ResNet50 U-Net** inference pipeline. The release combines four-rotation test-time augmentation with native-resolution mask restoration and connected-component score filtering. These operations define the output consistently across the video interface and saved reports. Model performance, application analysis rate, and source-video playback rate are separate measurements.
+Both workflows use the same **ResNet50 U-Net** inference pipeline, combining four-rotation test-time augmentation with native-resolution mask restoration and connected-component score filtering. The video interface and saved reports use the same filtered predictions.
 
 The modular architecture separates browser interaction, HTTP services, video decoding, model inference, and persistence. The frontend uses React, TypeScript, and Vite. The backend uses FastAPI and PyTorch, with PyAV/OpenCV for video and image processing. SQLite stores task and frame records, while local files retain videos, frames, masks, and exports.
 
@@ -69,9 +69,9 @@ FastAPI backend — one Uvicorn worker
     +-- Reports and exports: frame summaries, candidate previews, CSV / JSON
 ```
 
-### Current Model Configuration
+### Model Configuration
 
-| Setting | Current release |
+| Setting | Configuration |
 |---|---|
 | Model version | `e13-r50-joint-r94-r4-region080-v2` |
 | Architecture | ResNet50 encoder and five-stage U-Net decoder with GroupNorm |
@@ -79,10 +79,7 @@ FastAPI backend — one Uvicorn worker
 | Inference | FP32; rotations of 0°, 90°, 180°, and 270°; inverse-aligned logit averaging |
 | Output processing | Native-resolution restoration; pixel threshold 0.5; 8-connected components; component mean score ≥ 0.8 |
 | Candidate rule | The filtered mask contains at least one foreground pixel |
-| Area / temporal gates | No minimum-area gate or temporal-confirmation rule in the current release |
 | Model contract | [`SystemCode/backend/model.json`](SystemCode/backend/model.json) |
-
-The current application uses a single segmentation network with test-time augmentation. Fusion implementations in the model archive are not the deployed web inference pipeline. The application supports visual review; it does not establish clinical miss-rate reduction or validated real-time endoscopy performance.
 
 ## Section 3: Presentation Video
 
@@ -92,7 +89,7 @@ The EndoLens AI presentation video covers the project background, system archite
 
 ## Section 4: User Guide — Installation and Startup
 
-The instructions below run the current web application. Training or reproducing historical model experiments is not required.
+Follow these steps to install and run the application locally.
 
 ### 4.1 System Requirements
 
@@ -147,8 +144,6 @@ python -c "import torch; print(torch.__version__, 'CUDA:', torch.cuda.is_availab
 
 Expected: `No broken requirements found.`, and `CUDA: True` on GPU machines. The backend supports only the `auto`, `cpu`, and `cuda:0` devices; it does not use Apple MPS, so it runs on CPU on a Mac.
 
-Model-training environments under `SystemCode/model/` are separate from the web backend and are not needed to run the web system.
-
 ### 4.4 Place and Verify the Model Weights
 
 The weight file is excluded by `.gitignore`. Download `e13_resnet50_joint_seed42_epoch94.pt` through the team asset transfer (a public download link is not included in this repository) and place it at:
@@ -171,7 +166,7 @@ Expected output:
 dc6c9092baf68cf9e66264f632fae76642ff621282aaa7f65dbf8a899f168e68
 ```
 
-The backend checks the hash again at startup and refuses to load a mismatched file (`Weight integrity check failed`). Do not rename the file, and do not substitute the older `unet_b_expanded_seed42.pt` from `SystemCode/model/endolens_b/`.
+The backend checks the hash again at startup and refuses to load a mismatched file (`Weight integrity check failed`). Keep the checkpoint filename unchanged.
 
 ### 4.5 Configure the Backend Environment Variables (One Time)
 
@@ -243,8 +238,6 @@ Then check the browser at `http://localhost:5173`:
 3. In Live Detection, upload a recording and confirm that playback and the analyzed-frame view update. Check the displayed response times, analysis rate, and skipped-frame count.
 4. Open Reports, inspect timestamped candidate previews, download an annotated image, and export a CSV.
 
-Mask-revision endpoints are available in the backend API. The current browser interface displays a saved reviewed mask when one exists; an interactive mask-editing screen is not part of this walkthrough.
-
 Optional automated tests (run from `SystemCode/`; the model tests require the weights from Step 4.4):
 
 ```powershell
@@ -269,7 +262,7 @@ python -m unittest discover -s backend/tests -p "test*.py" -v
 
 After the first successful setup, each subsequent start only requires Step 4.6 in Terminal 1 (`conda activate endolens` plus the Uvicorn command) and `npm run dev -- --host localhost --port 5173 --strictPort` in Terminal 2. Rerun `npm ci` or `pip install` when dependencies change. Stop each server with `Ctrl+C`; past tasks and exports in `SystemCode/runtime_data/` are kept.
 
-The application provides model predictions for inspection, not clinical diagnoses. The current live workflow uses recorded playback as its input source. Run the backend locally or within an appropriately configured development environment.
+The application provides model predictions for visual inspection, not clinical diagnoses.
 
 ## Section 5: Repository Structure
 
@@ -289,19 +282,17 @@ AIS_EndoLensAI/
 │   │   ├── services/             Video processing and inference
 │   │   ├── workers/              Background analysis processing
 │   │   ├── repositories/         Persistent records
-│   │   ├── endolens_model/       Current E13 network, adapter, and filtering
+│   │   ├── endolens_model/       Segmentation network, adapter, and filtering
 │   │   ├── model.json            Release configuration and weight hash
 │   │   ├── weights/              Separately provisioned checkpoint; Git-ignored
 │   │   ├── examples/             Synthetic inputs for functional checks
 │   │   └── tests/                Backend functional and contract checks
-│   ├── model/                    Model-development source and archived protocols
+│   ├── model/                    Model source code and documentation
 │   └── runtime_data/             Local storage when started as documented
-├── ProjectReport/                Project documents and earlier progress reports
-├── Miscellaneous/               Shared model metadata and archived references
+├── ProjectReport/                Project documentation
+├── Miscellaneous/               Supporting project files
 ├── Video/                        Project demonstration assets
 ├── CONTRIBUTING.md
 ├── THIRD_PARTY_NOTICES.md
 └── README.md
 ```
-
-Older progress reports and model-directory instructions document earlier checkpoints. For the current web application, use the startup steps above and the release configuration in [`backend/model.json`](SystemCode/backend/model.json).
