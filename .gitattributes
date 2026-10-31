@@ -1,3 +1,0 @@
-# Preserve the published E13 bundle byte-for-byte.
-SystemCode/model/endolens_e13/** -text whitespace=cr-at-eol
-Miscellaneous/model_results/2026-10-31/*.csv -text whitespace=cr-at-eol
