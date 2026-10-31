@@ -1,3 +1,4 @@
-# EndoLens demo video
+EndoLens AI - Final Project Presentation
+https://youtu.be/qXlUmzXPsoE
 
-Project demonstration videos are not available yet. The old HDB submission example is archived in `Miscellaneous/template_reference/Video/` and is not an EndoLens demo. Add a reviewed link or compact deliverable here when the video application exists; keep raw colonoscopy data out of Git.
+Project background, model development and evaluation, system architecture, and application demonstration.

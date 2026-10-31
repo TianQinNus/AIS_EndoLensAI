@@ -85,7 +85,7 @@ FastAPI backend — one Uvicorn worker
 
 The EndoLens AI presentation video covers the project background, system architecture, segmentation model, software implementation, and application demonstration. The demonstration shows recorded-video review, timestamped mask inspection, candidate navigation, Reports, and Simulated-Live Analysis.
 
-**Presentation video:** Link to be added.
+**Presentation video:** [Watch the final project presentation on YouTube](https://youtu.be/qXlUmzXPsoE).
 
 ## Section 4: User Guide — Installation and Startup
 
@@ -314,12 +314,11 @@ AIS_EndoLensAI/
 │   │   └── tests/                Backend functional and contract checks
 │   ├── model/
 │   │   ├── endolens_e13/         Final SDK, external-weight installer, tests and model card
-│   │   └── docs/                Final release and historical model documentation
+│   │   └── docs/                Final E13 release documentation
 │   └── runtime_data/             Local storage when started as documented
 ├── ProjectReport/                Project documentation
 ├── Miscellaneous/               Supporting project files
 ├── Video/                        Project demonstration assets
-├── CONTRIBUTING.md
 ├── THIRD_PARTY_NOTICES.md
 └── README.md
 ```
@@ -359,3 +358,7 @@ python run_tests.py
 ```
 
 These checks replay a real CPU model fixture and synthetic API contracts. The SDK's optional reference server is separate from the maintained application in `SystemCode/backend`; use the application startup instructions in Section 4. The supplied synthetic inputs contain no patient data.
+
+### Research archive
+
+The `main` branch keeps only the final E13 release under `SystemCode/model`, alongside its release documentation. Historical E0-E4 experiments, supporting Polyp-PVT code and tools, the earlier ResNet34 B handover, and collaborator U-Net explorations are maintained on the [model branch](https://github.com/TianQinNus/AIS_EndoLensAI/tree/model/SystemCode/model). Its [experiment development record](https://github.com/TianQinNus/AIS_EndoLensAI/blob/model/SystemCode/model/docs/EXPERIMENT_STATUS.md) describes the research sequence, results, selection rationale and limitations. Use `main` for application setup; historical experiment entrypoints are not production startup commands.
