@@ -1,0 +1,18 @@
+{
+  "repository": "https://github.com/TianQinNus/AIS_EndoLensAI",
+  "base_commit": "45b167c8e93123c9bd91b5ad56f3873b7a49ef34",
+  "backend_tests": {
+    "tests": 20,
+    "failures": 0,
+    "errors": 0,
+    "scope": "Existing modular backend including live endpoints, transcoding and actual CPU model fixture"
+  },
+  "standalone_sdk_tests": {
+    "tests": 22,
+    "failures": 0,
+    "errors": 0
+  },
+  "backend_frontend_production_source_modified": false,
+  "weight_sha256": "dc6c9092baf68cf9e66264f632fae76642ff621282aaa7f65dbf8a899f168e68",
+  "weights_location": "Google Drive, lossless two-part distribution; excluded from Git"
+}

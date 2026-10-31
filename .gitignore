@@ -36,3 +36,10 @@ Thumbs.db
 *.key
 .vscode/
 .idea/
+
+# Tiny synthetic regression fixtures, not training data or model weights.
+!/SystemCode/backend/examples/synthetic_probability.npy
+!/SystemCode/model/endolens_e13/examples/synthetic_probability.npy
+/SystemCode/model/endolens_e13/runtime_data/
+/SystemCode/model/endolens_e13/_test_*/
+/SystemCode/backend/_test_*/

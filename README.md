@@ -101,6 +101,17 @@ The walkthrough below targets Windows 10/11 with PowerShell; macOS differences a
 - The deployment weight file `e13_resnet50_joint_seed42_epoch94.pt` (about 124 MiB; not tracked in Git and obtained separately)
 - Optional: an NVIDIA GPU with a CUDA 12.8-capable driver. Without a GPU the backend falls back to CPU, which is noticeably slower.
 
+**[Download the final E13 model weights from Google Drive](https://drive.google.com/drive/folders/12nddUWrat2Ih4sHpa4c8M-DuO76tDEKO).** The folder is readable by anyone with the link.
+
+The original weight is 130,413,723 bytes (124.37 MiB). It is distributed as two lossless parts because the upload interface limits individual files to 100 MiB. Download **both** files with their original names:
+
+| File | Bytes | Download |
+|---|---:|---|
+| `e13_resnet50_joint_seed42_epoch94.pt.part01` | 67,108,864 | [Part 1](https://drive.google.com/file/d/1pw_dTRumCR9gzV01QwTre7jnBrnS1EQF/view?usp=drivesdk) |
+| `e13_resnet50_joint_seed42_epoch94.pt.part02` | 63,304,859 | [Part 2](https://drive.google.com/file/d/1jK8p2FNagEAzYvKJ5aNW9XcCnKJ6BESa/view?usp=drivesdk) |
+
+Do not unzip the parts or load either part with PyTorch. Step 4.4 restores the unchanged `.pt` file and checks both part hashes and the complete SHA256. The SDK and installation tool are in [`SystemCode/model/endolens_e13`](SystemCode/model/endolens_e13/README.md). No model retraining or format conversion is involved.
+
 No separate database server, external API key, or internet connection is needed at runtime; SQLite runs locally. Tasks, sampled frames, masks, reviews, and exports are stored in a local storage directory.
 
 Setup order: clone → Python environment → weights placement and check → backend environment variables → backend (Terminal 1) → frontend (Terminal 2) → functional checks.
@@ -146,7 +157,21 @@ Expected: `No broken requirements found.`, and `CUDA: True` on GPU machines. The
 
 ### 4.4 Place and Verify the Model Weights
 
-The weight file is excluded by `.gitignore`. Download `e13_resnet50_joint_seed42_epoch94.pt` through the team asset transfer (a public download link is not included in this repository) and place it at:
+The weight is excluded by `.gitignore`. Download both parts from the links in Step 4.1 into the same local folder. From the repository root, run:
+
+```powershell
+python SystemCode/model/endolens_e13/install_weights.py --parts-dir "$HOME/Downloads"
+```
+
+The installer validates each part and restores the complete weight in both the existing application backend and standalone SDK. It refuses an incorrect existing destination. To install only the application copy, append `--target backend`. On macOS/Linux, use the same Python command with the appropriate downloads folder.
+
+If the complete original `.pt` is already available, use `--source "C:/path/to/e13_resnet50_joint_seed42_epoch94.pt"` instead of `--parts-dir`. Verify installed copies at any time with:
+
+```powershell
+python SystemCode/model/endolens_e13/install_weights.py --check
+```
+
+The existing application still loads its weight from:
 
 ```text
 SystemCode/backend/weights/e13_resnet50_joint_seed42_epoch94.pt
@@ -287,7 +312,9 @@ AIS_EndoLensAI/
 │   │   ├── weights/              Separately provisioned checkpoint; Git-ignored
 │   │   ├── examples/             Synthetic inputs for functional checks
 │   │   └── tests/                Backend functional and contract checks
-│   ├── model/                    Model source code and documentation
+│   ├── model/
+│   │   ├── endolens_e13/         Final SDK, external-weight installer, tests and model card
+│   │   └── docs/                Final release and historical model documentation
 │   └── runtime_data/             Local storage when started as documented
 ├── ProjectReport/                Project documentation
 ├── Miscellaneous/               Supporting project files
@@ -296,3 +323,39 @@ AIS_EndoLensAI/
 ├── THIRD_PARTY_NOTICES.md
 └── README.md
 ```
+
+
+## Section 6: Model Evaluation and Reproducibility
+
+The final model is E13: an ImageNet-initialised ResNet50 encoder and randomly initialised GroupNorm U-Net decoder trained jointly on positive and negative images. It has 32,520,977 parameters. Training used 2,269 positive and 1,907 negative images with 50/50 replacement sampling from epoch one. Epoch 94 was retained for its highest positive validation Dice. **No E13 checkpoint met all prespecified positive-protection criteria.** The team selected this configuration for exploratory application integration to reduce false candidate frames, not as proof that the original validation criteria passed.
+
+### Matched C6 development comparison
+
+All rows use 320 input, FP32, four-rotation logit averaging and native-resolution scoring on 83 positives and 1,760 negatives. Dice and IoU average positive images only. Negative-frame FPR counts negative images with any retained foreground.
+
+| Configuration | Positive Dice | Positive IoU | Negative-frame FPR |
+|---|---:|---:|---:|
+| Frozen Polyp-PVT | 0.84357 | 0.78978 | 66.19% |
+| Frozen ResNet34 B | 0.84647 | 0.78440 | 56.02% |
+| Positive-only ResNet50 | **0.88389** | **0.82727** | 89.72% |
+| E13, unfiltered | 0.85883 | 0.79540 | 30.80% |
+| Final E13, region mean >=0.8 | 0.85607 | 0.79299 | **20.97%** |
+
+Filtering removes predictions from 173 additional negative frames, reducing FPR from 542/1,760 to 369/1,760 at a positive Dice decrease of 0.00275. Seven positives have Dice below 0.5, including three with zero Dice. Training histories differ, and the positive-only comparators were not evaluated at their own best filtered operating points. C6 also informed threshold selection, so these results describe development performance rather than an untouched final test or clinical validation. The available records do not establish that the complete released pipeline restores compliance with the original criteria on validation data.
+
+The final rule uses native 8-connected components, pixel threshold 0.5 and component mean >=0.8. It has no minimum-area filter, temporal confirmation or additional model. Raw probability maps are diagnostic: display and candidate status must use the filtered mask. Scores are not calibrated disease probabilities. Upgrading weights does not recompute existing stored tasks.
+
+The [final model record](SystemCode/model/docs/FINAL_MODEL_RELEASE.md) contains the training recipe, data accounting, selection criteria and timing boundary. [Compact evaluation CSVs](Miscellaneous/model_results/2026-10-31/README.md) preserve full precision. Controlled full-SDK timing on the RTX 5060 Laptop GPU was 114.75 ms mean and 136.76 ms p95, excluding video decoding, HTTP, queues, persistence and browser display. These values are not application FPS.
+
+### Standalone SDK verification
+
+After installing weights and the backend dependencies:
+
+```powershell
+cd "$env:ENDOLENS_ROOT\SystemCode\model\endolens_e13"
+python verify_backend_sync.py
+python verify_bundle.py
+python run_tests.py
+```
+
+These checks replay a real CPU model fixture and synthetic API contracts. The SDK's optional reference server is separate from the maintained application in `SystemCode/backend`; use the application startup instructions in Section 4. The supplied synthetic inputs contain no patient data.
