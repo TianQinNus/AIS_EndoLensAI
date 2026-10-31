@@ -1,4 +1,4 @@
-# Final model evidence, 31 October 2026
+# Final model evidence
 
 These compact files reproduce the completed chapter-10 result bundle, without
 dataset images, probability maps, private videos or training checkpoints.
