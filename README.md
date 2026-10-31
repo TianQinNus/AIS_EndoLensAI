@@ -251,7 +251,7 @@ In a third terminal (in PowerShell, type `curl.exe`, not `curl`):
 cd "C:\path\to\AIS_EndoLensAI\SystemCode"
 curl.exe --fail-with-body http://127.0.0.1:8000/api/v1/health
 curl.exe --fail-with-body http://127.0.0.1:8000/api/v1/models
-curl.exe --fail-with-body -F "file=@backend/examples/synthetic_demo.mp4" http://127.0.0.1:8000/api/v1/videos
+curl.exe --fail-with-body -F "file=@backend/examples/example_video.avi" http://127.0.0.1:8000/api/v1/videos
 ```
 
 Expected:
@@ -261,7 +261,7 @@ Expected:
 
 Then check the browser at `http://localhost:5173`:
 
-1. Upload `SystemCode/backend/examples/synthetic_demo.mp4` or any colonoscopy video from `Video/` (MP4, MOV, M4V, AVI, or MKV; up to 512 MiB and 15 minutes).
+1. Upload the included [example video](SystemCode/backend/examples/example_video.avi), or another supported recording (MP4, MOV, M4V, AVI, or MKV; up to 512 MiB and 15 minutes). Use this example to demonstrate the application workflows.
 2. Start an analysis and confirm that progress advances and per-frame results appear. If a filtered prediction is nonempty, its candidate frame should show a mask overlay; an empty prediction should have no polyp overlay.
 3. In Live Detection, upload a recording and confirm that playback and the analyzed-frame view update. Check the displayed response times, analysis rate, and skipped-frame count.
 4. Open Reports, inspect timestamped candidate previews, download an annotated image, and export a CSV.
@@ -313,7 +313,7 @@ AIS_EndoLensAI/
 │   │   ├── endolens_model/       Segmentation network, adapter, and filtering
 │   │   ├── model.json            Release configuration and weight hash
 │   │   ├── weights/              Separately provisioned checkpoint; Git-ignored
-│   │   ├── examples/             Synthetic inputs for functional checks
+│   │   ├── examples/             Example video and synthetic test fixtures
 │   │   └── tests/                Backend functional and contract checks
 │   ├── model/
 │   │   ├── endolens_e13/         Final SDK, external-weight installer, tests and model card
