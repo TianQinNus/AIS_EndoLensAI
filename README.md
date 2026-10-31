@@ -3,7 +3,7 @@
 <h1>EndoLens AI</h1>
 <p><strong>Polyp Segmentation and Colonoscopy Video Analysis</strong></p>
 
-<p><img src="docs/images/endolens-video-analysis.png" alt="EndoLens AI recorded-video analysis interface with segmentation overlay, sampled frames and video timeline" width="640"></p>
+<p><a href="https://youtu.be/qXlUmzXPsoE"><img src="docs/images/endolens-video-analysis.png" alt="Watch the EndoLens AI presentation on YouTube" width="640"></a></p>
 
 <p>National University of Singapore<br>Institute of Systems Science (NUS-ISS)</p>
 <p>Practice Module (ISY5002) · Practice Project Group (FT) 8</p>
