@@ -1,0 +1,313 @@
+{
+  "kind": "selected aggregate fields; not original signed artifacts",
+  "records": [
+    {
+      "stage": "E6",
+      "source_artifact": "runs/e6_selection_seed42/selection_config.json",
+      "source_sha256": "3060c15e06bb072a00ba823751d2111c0c89591735efc2cfcb1f992a20d1a393",
+      "recorded_fields": {
+        "validation_status": "NO_PASS",
+        "selected_validation_metrics": {
+          "count": 272,
+          "dice": 0.7709467594182555,
+          "iou": 0.686592344073785,
+          "mae": 0.06960525864269584,
+          "median_dice": 0.8846310729570641,
+          "dice_lt05": 41,
+          "zero_dice": 7,
+          "source_dice": {
+            "FAR-POLYP-SEG": 0.7709467594182555
+          },
+          "alpha": 0.1,
+          "threshold": 0.65,
+          "delta_dice_vs_e0": 0.0029763905095143706,
+          "delta_mae_vs_e0": 0.0316651584000604,
+          "worst_source_delta_vs_e0": 0.0029763905095143706,
+          "dice_lt05_delta_vs_e0": -1,
+          "passes": false,
+          "checks": {
+            "mean_dice_gain": false,
+            "worst_source": true,
+            "mae": false,
+            "failure_tail": true
+          },
+          "violation_score": 0.02868876789054603
+        },
+        "gates": {
+          "min_mean_dice_gain": 0.003,
+          "min_source_dice_delta": -0.003,
+          "max_mae_increase": 0.003,
+          "max_dice_lt05_increase": 0
+        }
+      }
+    },
+    {
+      "stage": "E7-A",
+      "source_artifact": "runs/e7a_selection_seed42/selection_config.json",
+      "source_sha256": "ffcac7b9527c1447a916eb5670425cc7c892c013a587ccbaa01d78ff2427ab5a",
+      "recorded_fields": {
+        "validation_status": "NO_PASS",
+        "selected_validation_metrics": {
+          "count": 272,
+          "dice": 0.771197953527224,
+          "iou": 0.6873709949701028,
+          "mae": 0.046457844704170435,
+          "median_dice": 0.8876930329672159,
+          "dice_lt05": 40,
+          "zero_dice": 8,
+          "source_dice": {
+            "FAR-POLYP-SEG": 0.771197953527224
+          },
+          "alpha": 0.0,
+          "threshold": 0.35,
+          "slope": 0.22957206330838345,
+          "intercept": -2.1186114740402484,
+          "delta_dice_vs_e0": 0.003227584618482826,
+          "delta_mae_vs_e0": 0.008517744461534991,
+          "worst_source_delta_vs_e0": 0.003227584618482826,
+          "dice_lt05_delta_vs_e0": -2,
+          "passes": false,
+          "checks": {
+            "mean_dice_gain": true,
+            "worst_source": true,
+            "mae": false,
+            "failure_tail": true
+          },
+          "violation_score": 0.005517744461534991
+        },
+        "gates": {
+          "min_mean_dice_gain": 0.003,
+          "min_source_dice_delta": -0.003,
+          "max_mae_increase": 0.003,
+          "max_dice_lt05_increase": 0
+        }
+      }
+    },
+    {
+      "stage": "E7-A2",
+      "source_artifact": "runs/e7a2_selection_seed42/selection_config.json",
+      "source_sha256": "4d8860b3c5ac6ea798c734591b07f1d16f40d34184e5bafa08bd7c17b3052c9e",
+      "recorded_fields": {
+        "validation_status": "NO_PASS",
+        "selected_validation_metrics": {
+          "count": 272,
+          "dice": 0.777276379951369,
+          "iou": 0.689867881709492,
+          "mae": 0.04163470311751178,
+          "median_dice": 0.8841956854520122,
+          "dice_lt05": 42,
+          "zero_dice": 5,
+          "source_dice": {
+            "FAR-POLYP-SEG": 0.777276379951369
+          },
+          "alpha": 0.5,
+          "threshold": 0.5,
+          "raw_threshold": 0.5,
+          "calibrated_threshold": 0.15589116146089807,
+          "slope": 0.48460425646980665,
+          "intercept": -1.6891233610843757,
+          "strength": 0.9,
+          "family": "constrained_affine",
+          "delta_dice_vs_e0": 0.009306011042627849,
+          "delta_mae_vs_e0": 0.0036946028748763363,
+          "worst_source_delta_vs_e0": 0.009306011042627849,
+          "dice_lt05_delta_vs_e0": 0,
+          "passes": false,
+          "checks": {
+            "mean_dice_gain": true,
+            "worst_source": true,
+            "mae": false,
+            "failure_tail": true
+          },
+          "violation_score": 0.0006946028748763362
+        },
+        "gates": {
+          "min_mean_dice_gain": 0.003,
+          "min_source_dice_delta": -0.003,
+          "max_mae_increase": 0.003,
+          "max_dice_lt05_increase": 0
+        }
+      }
+    },
+    {
+      "stage": "E7-B1",
+      "source_artifact": "runs/e7b1_gate_cv_seed42/cv_decision.json",
+      "source_sha256": "68888c3a9d34b8c2697c8cc136dd1ffcd9201463627b29484e28ecf374ef87f3",
+      "recorded_fields": {
+        "status": "OOF_NO_PASS",
+        "formal_test_allowed": false
+      }
+    },
+    {
+      "stage": "E7-B2",
+      "source_artifact": "runs/e7b2_rule_selection_seed42/selection/decision.json",
+      "source_sha256": "592b0611018a29aad17b099d05a499acb949da170e5e8c105c10de67339deb99",
+      "recorded_fields": {
+        "status": "NO_PASS",
+        "formal_test_allowed": false,
+        "gates": {
+          "min_mean_dice_gain": 0.003,
+          "min_source_dice_delta": -0.003,
+          "max_mae_increase": 0.003,
+          "max_dice_lt05_increase": 0
+        }
+      }
+    },
+    {
+      "stage": "E8-repeat",
+      "source_artifact": "runs/e8_repeat_summary/stability.json",
+      "source_sha256": "dd993122e832cd4ae467804ee37f67d4ef51a075936ee5b8a10f2dd50c666d47",
+      "recorded_fields": {
+        "status": "B_GATES_NOT_REPRODUCED_ALL_SEEDS"
+      }
+    },
+    {
+      "stage": "E9",
+      "source_artifact": "runs/e9_balance_summary/decision.json",
+      "source_sha256": "6fe8c26327f79d5437ac1961b7c328a20b7427c5b9acaa4c412b64950565b044",
+      "recorded_fields": {
+        "status": "NO_PASS_RETAIN_B",
+        "selected_recipe_for_next_protocol": "B_expanded",
+        "gates": {
+          "max_macro_dice_loss_vs_B": 0.003,
+          "max_C5_dice_loss_vs_B": 0.01,
+          "max_original_dice_loss_vs_A": 0.003,
+          "max_source_near_zero_increase_vs_B": 0,
+          "max_source_zero_increase_vs_B": 0,
+          "require_all_unchanged_E8_gates_vs_A": true,
+          "require_all_three_seeds": true
+        }
+      }
+    },
+    {
+      "stage": "E10-B",
+      "source_artifact": "runs/e10b_fusion_seed42/locked_config.json",
+      "source_sha256": "5dc087960f55b090228a9869f8f45b10cf9aea2a6273e68883974f5ad68ddcc9",
+      "recorded_fields": {
+        "status": "NO_CALIBRATION_PASS_SELECTION_BLOCKED",
+        "formal_test_allowed": false,
+        "gates": {
+          "min_dice_gain_vs_each_single": 0.003,
+          "max_mae_increase_vs_each_single": 0.003,
+          "max_low05_increase_vs_each_single": 0,
+          "max_near_zero_increase_vs_each_single": 0,
+          "max_zero_increase_vs_each_single": 0
+        }
+      }
+    },
+    {
+      "stage": "E10-C",
+      "source_artifact": "runs/e10c_temperature_seed42/cross_validation/decision.json",
+      "source_sha256": "a1f2a68b54dd51b5ae54034f4d9848f8ee9e04b3e7de1c0fc51debca55133c2a",
+      "recorded_fields": {
+        "status": "NO_OOF_PASS_RETAIN_B",
+        "gates": {
+          "B_expanded_dice": true,
+          "B_expanded_mae": false,
+          "B_expanded_low05": true,
+          "B_expanded_near_zero": true,
+          "B_expanded_zero": false,
+          "E0_frozen_reference_dice": true,
+          "E0_frozen_reference_mae": false,
+          "E0_frozen_reference_low05": true,
+          "E0_frozen_reference_near_zero": true,
+          "E0_frozen_reference_zero": true,
+          "raw_equal_dice_retained": true,
+          "raw_equal_mae_protected": false,
+          "raw_equal_dice_lt05_protected": true,
+          "raw_equal_dice_lt01_protected": true,
+          "raw_equal_zero_dice_protected": true,
+          "fold0_dice_lt01_vs_raw": true,
+          "fold0_zero_dice_vs_raw": true,
+          "fold1_dice_lt01_vs_raw": true,
+          "fold1_zero_dice_vs_raw": true,
+          "fold2_dice_lt01_vs_raw": false,
+          "fold2_zero_dice_vs_raw": true,
+          "fold3_dice_lt01_vs_raw": true,
+          "fold3_zero_dice_vs_raw": true,
+          "fold4_dice_lt01_vs_raw": true,
+          "fold4_zero_dice_vs_raw": true,
+          "at_least_four_folds_retain_raw_dice": true
+        }
+      }
+    },
+    {
+      "stage": "E10-D",
+      "source_artifact": "runs/e10d_rescue_compat_seed42/diagnosis/decision.json",
+      "source_sha256": "32205ef00a3dc30985d0f0cda4d1172ce3dc19c8b647bbf567f5639c828bbbbd",
+      "recorded_fields": {
+        "status": "NO_FEASIBILITY_PASS_RETAIN_B",
+        "gates": {
+          "B_expanded_dice": false,
+          "B_expanded_mae": true,
+          "B_expanded_low05": true,
+          "B_expanded_near_zero": true,
+          "B_expanded_zero": true,
+          "E0_frozen_reference_dice": false,
+          "E0_frozen_reference_mae": true,
+          "E0_frozen_reference_low05": false,
+          "E0_frozen_reference_near_zero": true,
+          "E0_frozen_reference_zero": true,
+          "raw_equal_dice_retained": false,
+          "at_least_ten_accepted_components": false,
+          "at_least_five_accepted_patients": false,
+          "accepted_precision_at_least_080": false,
+          "accepted_weighted_precision_at_least_080": false,
+          "weighted_auc_at_least_060": true,
+          "tta_auc_gain_at_least_002": true,
+          "fold0_dice_lt01_protected_vs_B": true,
+          "fold0_zero_dice_protected_vs_B": true,
+          "fold1_dice_lt01_protected_vs_B": true,
+          "fold1_zero_dice_protected_vs_B": true,
+          "fold2_dice_lt01_protected_vs_B": true,
+          "fold2_zero_dice_protected_vs_B": true,
+          "fold3_dice_lt01_protected_vs_B": true,
+          "fold3_zero_dice_protected_vs_B": true,
+          "fold4_dice_lt01_protected_vs_B": true,
+          "fold4_zero_dice_protected_vs_B": true,
+          "four_folds_nonworse_dice_vs_B": true
+        }
+      }
+    },
+    {
+      "stage": "E11",
+      "source_artifact": "runs/e11_B_background_seed42/run_info.json",
+      "source_sha256": "e4b4d8a08c91f677153f816d2e645a39f0ea11480983e5fc5e95700c0796380e",
+      "recorded_fields": {
+        "status": "TRAINING"
+      }
+    },
+    {
+      "stage": "E12",
+      "source_artifact": "runs/e12_negative_comparison_seed42/selection.json",
+      "source_sha256": "35ca3871bc42858434e76603912f25997916248d13ba846cdb1d4ec1c3e0f513",
+      "recorded_fields": {
+        "status": "VALIDATION_SELECTION_LOCKED_EXPLORATORY",
+        "selected_name": "r50_positive",
+        "negative_training_effects": {
+          "r34": {
+            "declared_negative_training_gain_pass": false,
+            "fpr_any_delta_vs_frozen": 0.0,
+            "fpr_any_delta_vs_positive_control": 0.01177944862155389,
+            "positive_macro_delta_vs_positive_control": -0.0018139159030676755
+          },
+          "r50": {
+            "declared_negative_training_gain_pass": false,
+            "fpr_any_delta_vs_frozen": 0.0,
+            "fpr_any_delta_vs_positive_control": 0.1094640336473367,
+            "positive_macro_delta_vs_positive_control": -0.0006708290704229292
+          }
+        }
+      }
+    },
+    {
+      "stage": "E13",
+      "source_artifact": "runs/e13_joint_seed42/training/mixed50/selection.json",
+      "source_sha256": "9db263a0e413712a288159f8d569b817650e0d38346fc90fb8af809de1baefc4",
+      "recorded_fields": {
+        "status": "LOCKED_BEST_POSITIVE_ONLY_NO_PROTECTED_TRADEOFF",
+        "selected_entry": "e13_mixed50_best_positive"
+      }
+    }
+  ]
+}

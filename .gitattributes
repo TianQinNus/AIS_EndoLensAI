@@ -1,3 +1,25 @@
 # Preserve the published E13 bundle byte-for-byte.
 SystemCode/model/endolens_e13/** -text whitespace=cr-at-eol
 Miscellaneous/model_results/2026-10-31/*.csv -text whitespace=cr-at-eol
+
+# Preserve historical experiment source fingerprints across platforms.
+SystemCode/model/e5_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e6_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e7a_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e7a2_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e7b0_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e7b1_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e7b2_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e8_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e8_repeat_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e9_balance_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e10a_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e10b_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e10c_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e10d_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e11_background_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e12_negative_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e13_joint_windows/** -text whitespace=cr-at-eol
+SystemCode/model/e14_postprocess_windows/** -text whitespace=cr-at-eol
+SystemCode/model/experiment_evidence/*.csv -text whitespace=cr-at-eol
+SystemCode/model/e4_windows/core/*.py -text whitespace=cr-at-eol

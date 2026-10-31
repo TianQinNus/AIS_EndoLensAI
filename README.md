@@ -16,7 +16,7 @@ Gong Yucheng · A0355325E</p>
 
 ---
 
-> **Research branch:** `model` preserves historical experiments and the current E13 release. Use [main](https://github.com/TianQinNus/AIS_EndoLensAI/tree/main) for application deployment. See the [experiment development record](SystemCode/model/docs/EXPERIMENT_STATUS.md) for the research sequence and evaluation limits.
+> **Research branch (`model`):** This branch preserves the E0-E13 development sequence, source snapshots, failed selection outcomes and final E13 release. Start with the [chronological experiment index](SystemCode/model/README.md), [reproduction requirements](SystemCode/model/docs/REPRODUCIBILITY.md), and [compact evidence](SystemCode/model/experiment_evidence/README.md). Use [main](https://github.com/TianQinNus/AIS_EndoLensAI/tree/main) for current application deployment.
 
 ## Section 1: Project Overview
 
@@ -315,8 +315,11 @@ AIS_EndoLensAI/
 │   │   ├── examples/             Synthetic inputs for functional checks
 │   │   └── tests/                Backend functional and contract checks
 │   ├── model/
+│   │   ├── experiments/E0-E13/   Chronological stage guides and entrypoint navigation
+│   │   ├── e*_windows/          Original experiment source paths (E5-E14 included)
 │   │   ├── endolens_e13/         Final SDK, external-weight installer, tests and model card
-│   │   └── docs/                Final release and historical model documentation
+│   │   ├── experiment_evidence/ Aggregate results and recorded selection outcomes
+│   │   └── docs/                Reproduction requirements and final release record
 │   └── runtime_data/             Local storage when started as documented
 ├── ProjectReport/                Project documentation
 ├── Miscellaneous/               Supporting project files

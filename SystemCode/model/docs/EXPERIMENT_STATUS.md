@@ -68,4 +68,6 @@ C6 informed output-rule selection and was reused during development. Results are
 - [Full-precision final metrics](../../../Miscellaneous/model_results/2026-10-31/README.md): matched comparison and controlled latency CSVs.
 - [Project presentation](https://youtu.be/qXlUmzXPsoE): final team presentation and application demonstration.
 
-Historical source snapshots are preserved without rewriting executed training recipes. This publication does not claim to add missing E5-E13 training source directories; use the committed evidence and supplied experiment records rather than infer absent scripts or rerun requirements from stage names.
+Historical source snapshots are preserved without rewriting executed training recipes. The newly imported E5-E14 Python/CMD/configuration files are indexed in [the source manifest](IMPORTED_EXPERIMENT_SOURCES.json). Use [the E0-E13 index](../README.md) and [reproduction requirements](REPRODUCIBILITY.md) for package entrypoints and required external artifacts. E14 is the historical postprocessing folder name for the final E13 output-rule study, not a new trained model.
+
+The available E11 run record still reports TRAINING and does not establish completion of all three seeds. E8's all-seed guard status remains B_GATES_NOT_REPRODUCED_ALL_SEEDS; E12's recorded exploratory selection retained r50_positive and neither mixed continuation passed its negative-training-gain criteria. These outcomes are retained rather than replaced by later E13 development results.
