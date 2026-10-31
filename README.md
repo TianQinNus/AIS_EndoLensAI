@@ -261,7 +261,7 @@ Expected:
 
 Then check the browser at `http://localhost:5173`:
 
-1. Upload the included [example video](SystemCode/backend/examples/example_video.avi), or another supported recording (MP4, MOV, M4V, AVI, or MKV; up to 512 MiB and 15 minutes). Use this example to demonstrate the application workflows.
+1. Upload a video in MP4, MOV, M4V, AVI, or MKV format (up to 512 MiB and 15 minutes). You can use your own video or download the [example video](SystemCode/backend/examples/example_video.avi).
 2. Start an analysis and confirm that progress advances and per-frame results appear. If a filtered prediction is nonempty, its candidate frame should show a mask overlay; an empty prediction should have no polyp overlay.
 3. In Live Detection, upload a recording and confirm that playback and the analyzed-frame view update. Check the displayed response times, analysis rate, and skipped-frame count.
 4. Open Reports, inspect timestamped candidate previews, download an annotated image, and export a CSV.
